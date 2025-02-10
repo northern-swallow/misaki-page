@@ -2,40 +2,40 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/misaki-page/en/categories/</loc>
+    <loc>https://northern-swallow.github.io/misaki-page/en/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/misaki-page/categories/"
+                href="https://northern-swallow.github.io/misaki-page/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/misaki-page/en/categories/"
+                href="https://northern-swallow.github.io/misaki-page/en/categories/"
                 />
   </url><url>
-    <loc>http://localhost:1313/misaki-page/en/</loc>
+    <loc>https://northern-swallow.github.io/misaki-page/en/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/misaki-page/"
+                href="https://northern-swallow.github.io/misaki-page/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/misaki-page/en/"
+                href="https://northern-swallow.github.io/misaki-page/en/"
                 />
   </url><url>
-    <loc>http://localhost:1313/misaki-page/en/tags/</loc>
+    <loc>https://northern-swallow.github.io/misaki-page/en/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:1313/misaki-page/tags/"
+                href="https://northern-swallow.github.io/misaki-page/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://localhost:1313/misaki-page/en/tags/"
+                href="https://northern-swallow.github.io/misaki-page/en/tags/"
                 />
   </url>
 </urlset>
