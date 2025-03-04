@@ -6,7 +6,24 @@
         <description>Recent content in Categories on Misaki</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <copyright>Misaki</copyright><atom:link href="https://northern-swallow.github.io/misaki-page/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <copyright>Misaki</copyright>
+        <lastBuildDate>Tue, 04 Mar 2025 22:03:16 +0800</lastBuildDate><atom:link href="https://northern-swallow.github.io/misaki-page/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>C&#43;&#43;_fastdfs</title>
+        <link>https://northern-swallow.github.io/misaki-page/categories/c&#43;&#43;_fastdfs/</link>
+        <pubDate>Tue, 04 Mar 2025 22:03:16 +0800</pubDate>
+        
+        <guid>https://northern-swallow.github.io/misaki-page/categories/c&#43;&#43;_fastdfs/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>小记</title>
+        <link>https://northern-swallow.github.io/misaki-page/categories/%E5%B0%8F%E8%AE%B0/</link>
+        <pubDate>Mon, 24 Feb 2025 23:48:51 +0800</pubDate>
+        
+        <guid>https://northern-swallow.github.io/misaki-page/categories/%E5%B0%8F%E8%AE%B0/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Test</title>
         <link>https://northern-swallow.github.io/misaki-page/categories/test/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
