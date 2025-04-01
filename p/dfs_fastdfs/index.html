@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 项目架构图 1.1 一些概念 什么是服务器\n硬件: 一台配置高的电脑 软件: 电脑必须有一个能够解析http协议的软件 常见的Web服务器\ntomcat服务器\napache组织产品, 开源的免费服务器 weblogic 服务器\n">
+<title>dfs_fastdfs</title>
+
+<link rel='canonical' href='https://northern-swallow.github.io/misaki-page/p/dfs_fastdfs/'>
+
+<link rel="stylesheet" href="/misaki-page/scss/style.min.1588b590a5e38dea5387567d98019f1a5daaddc2fca3ecdce862aceecaf453d9.css"><meta property='og:title' content="dfs_fastdfs">
+<meta property='og:description' content="1. 项目架构图 1.1 一些概念 什么是服务器\n硬件: 一台配置高的电脑 软件: 电脑必须有一个能够解析http协议的软件 常见的Web服务器\ntomcat服务器\napache组织产品, 开源的免费服务器 weblogic 服务器\n">
+<meta property='og:url' content='https://northern-swallow.github.io/misaki-page/p/dfs_fastdfs/'>
+<meta property='og:site_name' content='Misaki'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-04T22:03:16&#43;08:00'/><meta property='article:modified_time' content='2025-03-04T22:03:16&#43;08:00'/>
+<meta name="twitter:title" content="dfs_fastdfs">
+<meta name="twitter:description" content="1. 项目架构图 1.1 一些概念 什么是服务器\n硬件: 一台配置高的电脑 软件: 电脑必须有一个能够解析http协议的软件 常见的Web服务器\ntomcat服务器\napache组织产品, 开源的免费服务器 weblogic 服务器\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/misaki-page/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/misaki-page/img/avatar_hu_9586ef9abeecc997.jpg" width="300"
+                            height="421" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/misaki-page">Misaki</a></h1>
+            <h2 class="site-description">その声お、もう一度聞かせて、Yoħanna</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/390463666'
+                        target="_blank"
+                        title="bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/northern-swallow'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/misaki-page/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/en/" >English</option>
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-项目架构图">1. 项目架构图</a>
+      <ol>
+        <li><a href="#11-一些概念">1.1 一些概念</a></li>
+        <li><a href="#12-项目架构">1.2 项目架构</a></li>
+      </ol>
+    </li>
+    <li><a href="#2-分布式文件系统">2. 分布式文件系统</a>
+      <ol>
+        <li><a href="#21-传统文件系统">2.1 传统文件系统</a></li>
+      </ol>
+    </li>
+    <li><a href="#3-fastdfs">3. FastDFS</a>
+      <ol>
+        <li><a href="#31-fastdfs介绍">3.1 fastDFS介绍</a></li>
+        <li><a href="#32-fastdfs安装">3.2 fastDFS安装</a></li>
+        <li><a href="#33-fastdfs配置文件">3.3 fastDFS配置文件</a></li>
+        <li><a href="#34-fastdfs的启动">3.4 fastDFS的启动</a></li>
+        <li><a href="#35-对file_id的解释">3.5 对file_id的解释</a></li>
+      </ol>
+    </li>
+    <li><a href="#4-上传下载代码实现">4. 上传下载代码实现</a></li>
+    <li><a href="#5-源码安装---回顾">5. 源码安装 - 回顾</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/misaki-page/categories/c&#43;&#43;_%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" >
+                C&#43;&#43;_分布式文件系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/misaki-page/p/dfs_fastdfs/">dfs_fastdfs</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-03-04</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-项目架构图">1. 项目架构图
+</h2><h3 id="11-一些概念">1.1 一些概念
+</h3><ol>
+<li>
+<p>什么是服务器</p>
+<ul>
+<li>硬件: 一台配置高的电脑</li>
+<li>软件: 电脑必须有一个能够解析http协议的软件</li>
+</ul>
+</li>
+<li>
+<p>常见的Web服务器</p>
+<ul>
+<li>
+<p>tomcat服务器</p>
+<ul>
+<li>apache组织产品, 开源的免费服务器</li>
+</ul>
+</li>
+<li>
+<p>weblogic 服务器</p>
+<ul>
+<li>bea公司, 收费的服务器</li>
+<li>不交费, 访问量受限制</li>
+</ul>
+</li>
+<li>
+<p>IIS服务器</p>
+<ul>
+<li>
+<p>Internet Information Server</p>
+</li>
+<li>
+<p>微软公司主推的服务器</p>
+</li>
+</ul>
+</li>
+<li>
+<p>nginx</p>
+<ul>
+<li>小巧且高效的HTTP服务器</li>
+<li>也可以做一个高效的负载均衡反向代理</li>
+<li>邮件服务器
+<ul>
+<li>pop3/smtp/imap</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="12-项目架构">1.2 项目架构
+</h3><p><img src="/misaki-page/p/dfs_fastdfs/1527001368556.png"
+	width="962"
+	height="536"
+	srcset="/misaki-page/p/dfs_fastdfs/1527001368556_hu_e4cba291735c297e.png 480w, /misaki-page/p/dfs_fastdfs/1527001368556_hu_4dd18c9e988f5eed.png 1024w"
+	loading="lazy"
+	
+		alt="1527001368556.png"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="179"
+		data-flex-basis="430px"
+	
+></p>
+<ol>
+<li>客户端
+<ul>
+<li>网络架构:
+<ul>
+<li>b/s
+<ul>
+<li>必须使用http协议</li>
+</ul>
+</li>
+<li>c/s
+<ul>
+<li>协议可以随意选择</li>
+<li>Qt -&gt; http</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>服务器
+<ul>
+<li>Nginx
+<ul>
+<li>能处理静态请求 -&gt; html, jpg</li>
+<li>动态请求无法处理</li>
+<li>服务器集群之后, 每台服务器上部署的内容必须相同</li>
+</ul>
+</li>
+<li>fastCGI
+<ul>
+<li>帮助服务器处理动态请求</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>反向代理服务器
+<ul>
+<li>客户端并不能直接访问web服务器, 直接访问到的是反向代理服务器</li>
+<li>客户端静请求发送给反向代理服务器, 反向代理将客户端请求转发给web服务器</li>
+</ul>
+</li>
+<li>关系型数据库
+<ul>
+<li>存储文件属性信息</li>
+<li>用户的属性信息</li>
+</ul>
+</li>
+<li>redis - 非关系型数据库 (内存数据库)
+<ul>
+<li>作用提出程序效率</li>
+<li>存储是服务器经常要从关系型数据中读取的数据</li>
+</ul>
+</li>
+<li>FASTDFS - 分布式文件系统
+<ul>
+<li>存储文件内容</li>
+<li>供用户下载</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-分布式文件系统">2. 分布式文件系统
+</h2><h3 id="21-传统文件系统">2.1 传统文件系统
+</h3><p><img src="/misaki-page/p/dfs_fastdfs/1527001945368.png"
+	width="654"
+	height="267"
+	srcset="/misaki-page/p/dfs_fastdfs/1527001945368_hu_ab1c493523424443.png 480w, /misaki-page/p/dfs_fastdfs/1527001945368_hu_f41fad434bdafcf0.png 1024w"
+	loading="lazy"
+	
+		alt="1527001945368"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="244"
+		data-flex-basis="587px"
+	
+></p>
+<ul>
+<li>传统的文件系统格式:
+<ul>
+<li>ntfs / fat32 / ext3 / ext4</li>
+</ul>
+</li>
+<li>可以被挂载和卸载</li>
+</ul>
+<p>###2.2 分布式文件系统</p>
+<blockquote>
+<p>文件系统的全部, 不在同一台主机上，而是在很多台主机上，多个分散的文件系统组合在一起，形成了一个完整的文件系统。</p></blockquote>
+<p><img src="/misaki-page/p/dfs_fastdfs/1527002769460.png"
+	width="614"
+	height="464"
+	srcset="/misaki-page/p/dfs_fastdfs/1527002769460_hu_edba5878bc2fc82.png 480w, /misaki-page/p/dfs_fastdfs/1527002769460_hu_412021b3ef2365bf.png 1024w"
+	loading="lazy"
+	
+		alt="1527002769460"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="132"
+		data-flex-basis="317px"
+	
+></p>
+<blockquote>
+<p>分布式文件系统:</p>
+<ol>
+<li>需要有网络</li>
+<li>多台主机
+<ul>
+<li>不需要在同一地点</li>
+</ul>
+</li>
+<li>需要管理者</li>
+<li>编写应用层的管理程序
+<ul>
+<li>不需要编写</li>
+</ul>
+</li>
+</ol></blockquote>
+<h2 id="3-fastdfs">3. FastDFS
+</h2><h3 id="31-fastdfs介绍">3.1 fastDFS介绍
+</h3><ol>
+<li>
+<p>fastDFS概述</p>
+<blockquote>
+<ul>
+<li>是用<strong>c语言</strong>编写的一款开源的分布式文件系统。
+<ul>
+<li>余庆 - 淘宝的架构师</li>
+</ul>
+</li>
+<li>为互联网量身定制，充分考虑了冗余备份、负载均衡、线性扩容等机制，注重高可用、高性能等指标
+<ul>
+<li>冗余备份: 纵向扩容</li>
+<li>线性扩容: 横向扩容</li>
+</ul>
+</li>
+<li>可以很容易搭建一套高性能的文件服务器集群提供文件==<strong>上传、下载</strong>==等服务。
+<ul>
+<li>图床</li>
+<li>网盘</li>
+</ul>
+</li>
+</ul></blockquote>
+</li>
+<li>
+<p>fastDFS框架中的三个角色</p>
+<ul>
+<li>追踪器 ( Tracker ) - 管理者 - 守护进程
+<ul>
+<li>管理存储节点</li>
+</ul>
+</li>
+<li>存储节点 - storage - 守护进程
+<ul>
+<li>存储节点是有多个的</li>
+</ul>
+</li>
+<li>客户端 - 不是守护进程, 这是程序猿编写的程序
+<ul>
+<li>文件上传</li>
+<li>文件下载</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>fastDFS三个角色之间的关系</p>
+<p><img src="/misaki-page/p/dfs_fastdfs/fdfs-file-upload.png"
+	width="929"
+	height="539"
+	srcset="/misaki-page/p/dfs_fastdfs/fdfs-file-upload_hu_c5daa807f096525f.png 480w, /misaki-page/p/dfs_fastdfs/fdfs-file-upload_hu_5a64c8500fa9b3c0.png 1024w"
+	loading="lazy"
+	
+		alt="1527004352706"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="172"
+		data-flex-basis="413px"
+	
+></p>
+<p><img src="/misaki-page/p/dfs_fastdfs/fdfs-file-down.png"
+	width="886"
+	height="409"
+	srcset="/misaki-page/p/dfs_fastdfs/fdfs-file-down_hu_5f4a9955d0c46c16.png 480w, /misaki-page/p/dfs_fastdfs/fdfs-file-down_hu_6cd8a48a96418e7.png 1024w"
+	loading="lazy"
+	
+		alt="1527004352706"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="216"
+		data-flex-basis="519px"
+	
+></p>
+<ol>
+<li>追踪器
+<ul>
+<li>最先启动追踪器</li>
+</ul>
+</li>
+<li>存储节点
+<ul>
+<li>第二个启动的角色</li>
+<li>存储节点启动之后, 会单独开一个线程
+<ul>
+<li>汇报当前存储节点的容量, 和剩余容量</li>
+<li>汇报数据的同步情况</li>
+<li>汇报数据被下载的次数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>客户端
+<ul>
+<li>最后启动
+<ul>
+<li>上传
+<ul>
+<li>连接追踪器, 询问存储节点的信息
+<ul>
+<li>我要上传1G的文件, 询问那个存储节点有足够的容量</li>
+<li>追踪器查询, 得到结果</li>
+<li>追踪器将查到的存储节点的IP+端口发送给客户端</li>
+<li>通过得到IP和端口连接存储节点</li>
+<li>将文件内容发送给存储节点</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>下载
+<ul>
+<li>连接追踪器, 询问存储节点的信息
+<ul>
+<li>问一下, 要下载的文件在哪一个存储节点</li>
+<li>追踪器查询, 得到结果</li>
+<li>追踪器将查到的存储节点的IP+端口发送给客户端</li>
+<li>通过得到IP和端口连接存储节点</li>
+<li>下载文件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p>fastDFS集群 - （了解即可）</p>
+<p><img src="/misaki-page/p/dfs_fastdfs/1527003636589.png"
+	width="595"
+	height="549"
+	srcset="/misaki-page/p/dfs_fastdfs/1527003636589_hu_670af3c7b8a4673a.png 480w, /misaki-page/p/dfs_fastdfs/1527003636589_hu_f42ff6b586967568.png 1024w"
+	loading="lazy"
+	
+		alt="1527003636589"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="108"
+		data-flex-basis="260px"
+	
+></p>
+<ol>
+<li>追踪器集群
+<ul>
+<li>为什么集群？
+<ul>
+<li>避免单点故障</li>
+</ul>
+</li>
+<li>多个Tracker如何工作？
+<ul>
+<li>轮询工作</li>
+</ul>
+</li>
+<li>如何实现集群？
+<ul>
+<li>修改配置文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>存储节点集群
+<ul>
+<li>fastDFS管理存储节点的方式？
+<ul>
+<li>通过分组的方式完成的</li>
+</ul>
+</li>
+<li>集群方式（扩容方式）
+<ul>
+<li>横向扩容 - 增加容量
+<ul>
+<li>添加一台新的主机 -&gt; 容量增加了</li>
+<li>假设当前有两个组: group1, group2
+<ul>
+<li>需要添加一个新的分组 -&gt; group3
+<ul>
+<li>新主机属于第三组</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>不同组的主机之间不需要通信</li>
+</ul>
+</li>
+<li>纵向扩容 - 数据备份
+<ul>
+<li>假设当前有两个组: group1, group2
+<ul>
+<li>将新的主机放到现有的组中</li>
+<li>每个组的主机数量从1 -&gt; N
+<ul>
+<li>这n台主机的关系就是相互备份的关系</li>
+<li>同一个组中的主机需要通信</li>
+<li>每组的容量 == 容量最小的这台主机</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如何实现?
+<ul>
+<li>通过修改配置文件可实现</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="32-fastdfs安装">3.2 fastDFS安装
+</h3><ol>
+<li>
+<p>fastDFS安装</p>
+<ul>
+<li>libfastcommon-1.36.zip
+<ul>
+<li>fastdfs的基础库包</li>
+<li>unzip xxx.zip</li>
+<li>./make.sh</li>
+<li>./make.sh install</li>
+</ul>
+</li>
+<li>fastdfs-5.10.tar.gz
+<ul>
+<li>tar zxvf xxx.tar.gz</li>
+<li>./make.sh</li>
+<li>./make.sh install</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>测试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1">#fastDFS安装的所有的可执行程序: </span>
+</span></span><span class="line"><span class="cl">/usr/bin/fdfs_*
+</span></span><span class="line"><span class="cl">fdfs_test
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="33-fastdfs配置文件">3.3 fastDFS配置文件
+</h3><blockquote>
+<p>配置文件默认位置:  /etc/fdfs</p>
+<p>client.conf.sample  storage.conf.sample  storage_ids.conf.sample  tracker.conf.sample</p></blockquote>
+<ol>
+<li>
+<p>tracker 配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 将追踪器和部署的主机的IP地址进程绑定, 也可以不指定</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果不指定, 会自动绑定当前主机IP, 如果是云服务器建议不要写</span>
+</span></span><span class="line"><span class="cl"><span class="nv">bind_addr</span><span class="o">=</span>192.168.247.135
+</span></span><span class="line"><span class="cl"><span class="c1"># 追踪器监听的端口</span>
+</span></span><span class="line"><span class="cl"><span class="nv">port</span><span class="o">=</span><span class="m">22122</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 追踪器存储日志信息的目录, xxx.pid文件, 必须是一个存在的目录</span>
+</span></span><span class="line"><span class="cl"><span class="nv">base_path</span><span class="o">=</span>/home/yuqing/fastdfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>storage 配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 当前存储节点对应的主机属于哪一个组</span>
+</span></span><span class="line"><span class="cl"><span class="nv">group_name</span><span class="o">=</span>group1
+</span></span><span class="line"><span class="cl"><span class="c1"># 当前存储节点和所应该的主机进行IP地址的绑定, 如果不写, 有fastdfs自动绑定</span>
+</span></span><span class="line"><span class="cl"><span class="nv">bind_addr</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 存储节点绑定的端口</span>
+</span></span><span class="line"><span class="cl"><span class="nv">port</span><span class="o">=</span><span class="m">23000</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 存储节点写log日志的路径</span>
+</span></span><span class="line"><span class="cl"><span class="nv">base_path</span><span class="o">=</span>/home/yuqing/fastdfs
+</span></span><span class="line"><span class="cl"><span class="c1"># 存储节点提供的存储文件的路径个数</span>
+</span></span><span class="line"><span class="cl"><span class="nv">store_path_count</span><span class="o">=</span><span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 具体的存储路径</span>
+</span></span><span class="line"><span class="cl"><span class="nv">store_path0</span><span class="o">=</span>/home/yuqing/fastdfs
+</span></span><span class="line"><span class="cl"><span class="nv">store_path1</span><span class="o">=</span>/home/yuqing/fastdfs1
+</span></span><span class="line"><span class="cl"><span class="c1"># 追踪器的地址信息</span>
+</span></span><span class="line"><span class="cl"><span class="nv">tracker_server</span><span class="o">=</span>192.168.247.135:22122 
+</span></span><span class="line"><span class="cl"><span class="nv">tracker_server</span><span class="o">=</span>192.168.247.136:22122 
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>客户端配置文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 客户端写log日志的目录</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 该路径必须存在</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 当前的用户对于该路径中的文件有读写权限</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 当前用户robin</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 指定的路径属于root</span>
+</span></span><span class="line"><span class="cl"><span class="nv">base_path</span><span class="o">=</span>/home/yuqing/fastdfs
+</span></span><span class="line"><span class="cl"><span class="c1"># 要连接的追踪器的地址信息</span>
+</span></span><span class="line"><span class="cl"><span class="nv">tracker_server</span><span class="o">=</span>192.168.247.135:22122 
+</span></span><span class="line"><span class="cl"><span class="nv">tracker_server</span><span class="o">=</span>192.168.247.136:22122 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/misaki-page/p/dfs_fastdfs/1527064927855.png"
+	width="556"
+	height="485"
+	srcset="/misaki-page/p/dfs_fastdfs/1527064927855_hu_66b944cdbe7e87a7.png 480w, /misaki-page/p/dfs_fastdfs/1527064927855_hu_afa3a9920a43bb6f.png 1024w"
+	loading="lazy"
+	
+		alt="1527064927855"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="114"
+		data-flex-basis="275px"
+	
+></p>
+<ol>
+<li>安装fastDFS安装包</li>
+</ol>
+</li>
+</ol>
+<h3 id="34-fastdfs的启动">3.4 fastDFS的启动
+</h3><ol>
+<li>
+<p>第一个启动追踪器  - 守护进程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 启动程序在 /usr/bin/fdfs_*</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动</span>
+</span></span><span class="line"><span class="cl">fdfs_trackerd 追踪器的配置文件<span class="o">(</span>/etc/fdfs/tracker.conf<span class="o">)</span> 
+</span></span><span class="line"><span class="cl"><span class="c1"># 关闭</span>
+</span></span><span class="line"><span class="cl">fdfs_trackerd 追踪器的配置文件<span class="o">(</span>/etc/fdfs/tracker.conf<span class="o">)</span>  stop
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启</span>
+</span></span><span class="line"><span class="cl">fdfs_trackerd 追踪器的配置文件<span class="o">(</span>/etc/fdfs/tracker.conf<span class="o">)</span> restart
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>第二个启动存储节点 - 守护进程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 启动</span>
+</span></span><span class="line"><span class="cl">fdfs_storaged 存储节点的配置文件<span class="o">(</span>/etc/fdfs/stroga.conf<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 关闭</span>
+</span></span><span class="line"><span class="cl">fdfs_storaged 存储节点的配置文件<span class="o">(</span>/etc/fdfs/stroga.conf<span class="o">)</span> stop
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启</span>
+</span></span><span class="line"><span class="cl">fdfs_storaged 存储节点的配置文件<span class="o">(</span>/etc/fdfs/stroga.conf<span class="o">)</span> restart
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>最后启动客户端 - 普通进程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 上传</span>
+</span></span><span class="line"><span class="cl">fdfs_upload_file 客户端的配置文件<span class="o">(</span>/etc/fdfs/client.conf<span class="o">)</span> 要上传的文件
+</span></span><span class="line"><span class="cl"><span class="c1"># 得到的结果字符串: group1/M00/00/00/wKj3h1vC-PuAJ09iAAAHT1YnUNE31352.c</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 下载</span>
+</span></span><span class="line"><span class="cl">fdfs_download_file 客户端的配置文件<span class="o">(</span>/etc/fdfs/client.conf<span class="o">)</span> 上传成功之后得到的字符串<span class="o">(</span>fileID<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>fastDFS状态检测</p>
+<ul>
+<li>
+<p>命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">fdfs_monitor /etc/fdfs/client.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><a class="link" href="https://blog.csdn.net/u014723529/article/details/46048411"  target="_blank" rel="noopener"
+    >Storage Server的7种状态</a></p>
+<p><a class="link" href="https://blog.csdn.net/u014723529/article/details/46048411"  target="_blank" rel="noopener"
+    >https://blog.csdn.net/u014723529/article/details/46048411</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># FDFS_STORAGE_STATUS：INIT      :初始化，尚未得到同步已有数据的源服务器</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># FDFS_STORAGE_STATUS：WAIT_SYNC :等待同步，已得到同步已有数据的源服务器</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># FDFS_STORAGE_STATUS：SYNCING   :同步中</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># FDFS_STORAGE_STATUS：DELETED   :已删除，该服务器从本组中摘除</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># FDFS_STORAGE_STATUS：OFFLINE   :离线</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># FDFS_STORAGE_STATUS：ONLINE    :在线，尚不能提供服务</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># FDFS_STORAGE_STATUS：ACTIVE    :在线，可以提供服务</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ol>
+<h3 id="35-对file_id的解释">3.5 对file_id的解释
+</h3><p><img src="/misaki-page/p/dfs_fastdfs/1527004617787.png"
+	width="895"
+	height="35"
+	srcset="/misaki-page/p/dfs_fastdfs/1527004617787_hu_727ce959039da2ea.png 480w, /misaki-page/p/dfs_fastdfs/1527004617787_hu_17c0fd3f12c8c798.png 1024w"
+	loading="lazy"
+	
+		alt="1527004617787"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="2557"
+		data-flex-basis="6137px"
+	
+></p>
+<ul>
+<li>group1
+<ul>
+<li>文件上传到了存储节点的哪一个组</li>
+<li>如果有多个组这个组名可变的</li>
+</ul>
+</li>
+<li>M00 - 虚拟目录
+<ul>
+<li>和存储节点的配置项有映射
+<ul>
+<li>store_path0=/home/yuqing/fastdfs/data    -&gt;  M00
+store_path1=/home/yuqing/fastdfs1/data   -&gt; M01</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>00/00
+<ul>
+<li>实际的路径</li>
+<li>可变的</li>
+</ul>
+</li>
+<li>wKhS_VlrEfOAdIZyAAAJTOwCGr43848.md
+<ul>
+<li>文件名包含的信息</li>
+<li>采用Base64编码
+<ul>
+<li>
+<p>包含的字段包括</p>
+<ul>
+<li>
+<p>源storage server Ip 地址</p>
+</li>
+<li>
+<p>文件创建时间</p>
+</li>
+<li>
+<p>文件大小</p>
+</li>
+<li>
+<p>文件CRC32效验码</p>
+<ul>
+<li>循环冗余校验</li>
+</ul>
+</li>
+<li>
+<p>随机数</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-上传下载代码实现">4. 上传下载代码实现
+</h2><ol>
+<li>
+<p>使用多进程方式实现</p>
+<ul>
+<li>
+<p>exec函数族函数</p>
+<ul>
+<li>execl</li>
+<li>execlp</li>
+</ul>
+</li>
+<li>
+<p>父进程</p>
+<ul>
+<li>
+<p>子进程 -&gt; 执行</p>
+<p>execlp(&ldquo;fdfs_upload_file&rdquo; , &ldquo;xx&rdquo;, arg, NULL), 有结果输出, 输出到终端</p>
+<ul>
+<li>不让它写到终端 -&gt; 重定向dup2(old, new)
+<ul>
+<li>old-&gt; 标准输出</li>
+<li>new -&gt; 管道的写端</li>
+<li>文件描述符</li>
+<li>数据块读到内存 -&gt; 子进程
+<ul>
+<li>数据最终要给到父进程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>pipe -&gt; 读端, 写端
+<ul>
+<li>在子进程创建之前创建就行了</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>父进程</p>
+<ul>
+<li>读管道 -&gt; 内存</li>
+<li>内存数据写数据库</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/misaki-page/p/dfs_fastdfs/p.png"
+	width="439"
+	height="244"
+	srcset="/misaki-page/p/dfs_fastdfs/p_hu_46bb4bacc09ee3bb.png 480w, /misaki-page/p/dfs_fastdfs/p_hu_fc3a3ce7261050a3.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="179"
+		data-flex-basis="431px"
+	
+></p>
+</li>
+<li>
+<p>使用fastDFS API实现</p>
+<ul>
+<li></li>
+</ul>
+</li>
+</ol>
+<h2 id="5-源码安装---回顾">5. 源码安装 - 回顾
+</h2><p>安装流程:</p>
+<ol>
+<li>以下文件, 里边有安装步骤
+<ul>
+<li>readme</li>
+<li>readme.md</li>
+<li>INSTALL</li>
+</ul>
+</li>
+<li>找 可执行文件 <font color=green>configure</font>
+<ul>
+<li>执行这个可执行文件
+<ul>
+<li>检测安装环境</li>
+<li>生成 makefile</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>执行<strong>make</strong>命令
+<ul>
+<li>编译源代码
+<ul>
+<li>生成了动态库</li>
+<li>静态库</li>
+<li>可执行程序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>安装 <strong>make install</strong> (需要管理员权限)
+<ul>
+<li>将第三步生成的动态库/动态库/可执行程序拷贝到对应的系统目录</li>
+</ul>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_summary/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_summary</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_upload-filelist-download/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_Upload Filelist Download</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_css-upload/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_css Upload</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_login/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_login</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_nginx-fastdfs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_nginx&#43;fastdfs</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Misaki
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计 <br />
+
+        
+        <span>
+            ICO 由 
+            <a href="https://www.flaticon.com/free-icons/halloween-party" 
+               title="Halloween party icons created by Pixelmeetup - Flaticon" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                Pixelmeetup
+            </a> 设计
+        </span>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/misaki-page/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 文件上传下载流程 文件上传流程\n文件下载流程\n优化\n优化思路:\n直接让客户端连接fastDFS的存储节点, 实现文件下载\n举例, 访问一个url直接下载:\n">
+<title>Dfs_nginx&#43;fastdfs</title>
+
+<link rel='canonical' href='https://northern-swallow.github.io/misaki-page/p/dfs_nginx-fastdfs/'>
+
+<link rel="stylesheet" href="/misaki-page/scss/style.min.1588b590a5e38dea5387567d98019f1a5daaddc2fca3ecdce862aceecaf453d9.css"><meta property='og:title' content="Dfs_nginx+fastdfs">
+<meta property='og:description' content="1. 文件上传下载流程 文件上传流程\n文件下载流程\n优化\n优化思路:\n直接让客户端连接fastDFS的存储节点, 实现文件下载\n举例, 访问一个url直接下载:\n">
+<meta property='og:url' content='https://northern-swallow.github.io/misaki-page/p/dfs_nginx-fastdfs/'>
+<meta property='og:site_name' content='Misaki'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-18T12:11:48&#43;08:00'/><meta property='article:modified_time' content='2025-03-18T12:11:48&#43;08:00'/>
+<meta name="twitter:title" content="Dfs_nginx+fastdfs">
+<meta name="twitter:description" content="1. 文件上传下载流程 文件上传流程\n文件下载流程\n优化\n优化思路:\n直接让客户端连接fastDFS的存储节点, 实现文件下载\n举例, 访问一个url直接下载:\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/misaki-page/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/misaki-page/img/avatar_hu_9586ef9abeecc997.jpg" width="300"
+                            height="421" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/misaki-page">Misaki</a></h1>
+            <h2 class="site-description">その声お、もう一度聞かせて、Yoħanna</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/390463666'
+                        target="_blank"
+                        title="bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/northern-swallow'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/misaki-page/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/en/" >English</option>
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-文件上传下载流程">1. 文件上传下载流程</a></li>
+    <li><a href="#2-nginx和fastdfs的整合">2. Nginx和fastDFS的整合</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#3-数据库表">3. 数据库表</a>
+      <ol>
+        <li><a href="#31-数据库操作">3.1 数据库操作</a></li>
+        <li><a href="#32-数据库建表">3.2 数据库建表</a></li>
+      </ol>
+    </li>
+    <li><a href="#复习">复习</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/misaki-page/categories/c&#43;&#43;_%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" >
+                C&#43;&#43;_分布式文件系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/misaki-page/p/dfs_nginx-fastdfs/">Dfs_nginx&#43;fastdfs</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-03-18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-文件上传下载流程">1. 文件上传下载流程
+</h2><ol>
+<li>
+<p>文件上传流程</p>
+<p><img src="/misaki-page/p/dfs_nginx-fastdfs/1535275371466.png"
+	width="785"
+	height="403"
+	srcset="/misaki-page/p/dfs_nginx-fastdfs/1535275371466_hu_5b52c4abeb78f0f3.png 480w, /misaki-page/p/dfs_nginx-fastdfs/1535275371466_hu_49f86a99db19d8f2.png 1024w"
+	loading="lazy"
+	
+		alt="1535275371466"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="194"
+		data-flex-basis="467px"
+	
+></p>
+</li>
+<li>
+<p>文件下载流程</p>
+<p><img src="/misaki-page/p/dfs_nginx-fastdfs/1535275433135.png"
+	width="633"
+	height="357"
+	srcset="/misaki-page/p/dfs_nginx-fastdfs/1535275433135_hu_f59785f210d83adb.png 480w, /misaki-page/p/dfs_nginx-fastdfs/1535275433135_hu_62817713e50ad8af.png 1024w"
+	loading="lazy"
+	
+		alt="1535275433135"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="177"
+		data-flex-basis="425px"
+	
+></p>
+</li>
+<li>
+<p>优化</p>
+<blockquote>
+<p>优化思路:</p>
+<ul>
+<li>
+<ul>
+<li>
+<p>直接让客户端连接fastDFS的存储节点, 实现文件下载</p>
+</li>
+<li>
+<p>举例, 访问一个url直接下载:</p>
+<p><a class="link" href="http://192.168.247.147/group1/M00/00/00/wKj3k1tMBKuARhwBAAvea_OGt2M471.jpg"  target="_blank" rel="noopener"
+    >http://192.168.247.147/group1/M00/00/00/wKj3k1tMBKuARhwBAAvea_OGt2M471.jpg</a></p>
+</li>
+</ul>
+</li>
+</ul></blockquote>
+<p><img src="/misaki-page/p/dfs_nginx-fastdfs/1535275468424.png"
+	width="632"
+	height="391"
+	srcset="/misaki-page/p/dfs_nginx-fastdfs/1535275468424_hu_59adc10b159209e1.png 480w, /misaki-page/p/dfs_nginx-fastdfs/1535275468424_hu_8304bc69467eda69.png 1024w"
+	loading="lazy"
+	
+		alt="1535275468424"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="161"
+		data-flex-basis="387px"
+	
+></p>
+<blockquote>
+<ol>
+<li>
+<p>客户端发送请求使用的协议: http</p>
+</li>
+<li>
+<ul>
+<li>
+<p>fastDFS能不能解析http协议</p>
+</li>
+<li>
+<p>nginx能解析http协议</p>
+</li>
+<li>
+<ul>
+<li>在nginx中安装fastDFS的插件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>客户端怎么知道文件就存储在对应的那个存储节点上?</p>
+</li>
+<li>
+<ul>
+<li>上传的时候将fileID和存储节点IP地址都进行存储</li>
+</ul>
+</li>
+</ol></blockquote>
+</li>
+</ol>
+<h2 id="2-nginx和fastdfs的整合">2. Nginx和fastDFS的整合
+</h2><ol>
+<li>
+<p>在存储节点上安装Nginx, 将软件安装包拷贝到fastDFS存储节点对应的主机上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 1. 找fastDFS的存储节点</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 在存储节点对应的主机上安装Nginx, 安装的时候需要一并将插件装上</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#	- (余庆提供插件的代码   +   nginx的源代码 ) * 交叉编译 = Nginx  </span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>在存储节点对应的主机上安装Nginx, 作为web服务器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">- fastdfs-nginx-module_v1.16.tar.gz 解压缩
+</span></span><span class="line"><span class="cl"><span class="c1"># 1. 进入nginx的源码安装目录</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 检测环境, 生成makefile</span>
+</span></span><span class="line"><span class="cl">./configure --add-module<span class="o">=</span>fastdfs插件的源码目录/src
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">sudo make install
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>make过程中的错误:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 1. fatal error: fdfs_define.h: No such file or directory</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. fatal error: common_define.h: No such file or directory</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">default:    build
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">clean:
+</span></span><span class="line"><span class="cl">    rm -rf Makefile objs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">build:
+</span></span><span class="line"><span class="cl">    <span class="k">$(</span>MAKE<span class="k">)</span> -f objs/Makefile
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">install:
+</span></span><span class="line"><span class="cl">    <span class="k">$(</span>MAKE<span class="k">)</span> -f objs/Makefile install
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">modules:
+</span></span><span class="line"><span class="cl">    <span class="k">$(</span>MAKE<span class="k">)</span> -f objs/Makefile modules
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">upgrade:
+</span></span><span class="line"><span class="cl">    /usr/local/nginx/sbin/nginx -t
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">kill</span> -USR2 <span class="sb">`</span>cat /usr/local/nginx/logs/nginx.pid<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">    sleep <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">test</span> -f /usr/local/nginx/logs/nginx.pid.oldbin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">kill</span> -QUIT <span class="sb">`</span>cat /usr/local/nginx/logs/nginx.pid.oldbin<span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 解决方案 - 修改objs/Makefile</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ALL_INCS</span> <span class="o">=</span> -I src/core <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I src/event <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I src/event/modules <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I src/os/unix <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I /usr/local/include/fastdfs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I /usr/local/include/fastcommon/ <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I objs <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I src/http <span class="se">\ </span>                                                                                                     
+</span></span><span class="line"><span class="cl">    -I src/http/modules<span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -I /usr/include/fastdfs/
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装成功, 启动Nginx, 发现没有 worker进程</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">robin@OS:/usr/local/nginx/sbin$ ps aux<span class="p">|</span>grep nginx
+</span></span><span class="line"><span class="cl">root      <span class="m">65111</span>  0.0  0.0  <span class="m">39200</span>   <span class="m">696</span> ?Ss   10:32   0:00 nginx: master process ./nginx
+</span></span><span class="line"><span class="cl">robin     <span class="m">65114</span>  0.0  0.0  <span class="m">16272</span>   <span class="m">928</span> pts/9  S+   10:32   0:00 grep --color<span class="o">=</span>auto nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>找nginx的logs日志</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># ERROR - file: shared_func.c, line: 968, file /etc/fdfs/mod_fastdfs.conf not exist</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 从哪儿找 -&gt; fastDFS插件目录中找</span>
+</span></span><span class="line"><span class="cl">robin@OS:~/package/nginx/fastdfs-nginx-module/src$ tree
+</span></span><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── common.c
+</span></span><span class="line"><span class="cl">├── common.h
+</span></span><span class="line"><span class="cl">├── config
+</span></span><span class="line"><span class="cl">├── mod_fastdfs.conf   -&gt; cp /etc/fdfs
+</span></span><span class="line"><span class="cl">└── ngx_http_fastdfs_module.c
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">0</span> directories, <span class="m">5</span> files
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>需要修改mod_fdfs.conf文件, 参数当前存储节点的storage.conf进行修改</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h1 id="存储log日志的目录">存储log日志的目录
+</h1><p>base_path=/home/robin/fastdfs/storage</p>
+<h1 id="连接tracker地址信息">连接tracker地址信息
+</h1><p>tracker_server=192.168.247.135:22122</p>
+<h1 id="存储节点绑定的端口">存储节点绑定的端口
+</h1><p>storage_server_port=23000</p>
+<h1 id="当前存储节点所属的组">当前存储节点所属的组
+</h1><p>group_name=group1</p>
+<h1 id="客户端下载文件的时候-这个下载的url中是不是包含组的名字">客户端下载文件的时候, 这个下载的url中是不是包含组的名字
+</h1><p>// 上传的fileID: group1/M00/00/00/wKj3h1vJRPeAA9KEAAAIZMjR0rI076.cpp
+// 完整的url: http://192.168.1.100/group1/M00/00/00/wKj3h1vJRPeAA9KEAAAIZMjR0rI076.cpp
+url_have_group_name = true</p>
+<h1 id="存储节点上存储路径的个数">存储节点上存储路径的个数
+</h1><p>store_path_count=1</p>
+<h1 id="存储路径的详细信息">存储路径的详细信息
+</h1><p>store_path0=/home/robin/fastdfs/storage</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">4. 重写启动Nginx, 还是没有worker进程, 查看log日志
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">```shell
+</span></span><span class="line"><span class="cl"># ERROR - file: ini_file_reader.c, line: 631, include file &#34;http.conf&#34; not exists, line: &#34;#include http.conf&#34;
+</span></span><span class="line"><span class="cl">从 /etc/fdfs 下找的时候不存在
+</span></span><span class="line"><span class="cl">	- 从fastDFS源码安装目录找/conf
+</span></span><span class="line"><span class="cl">	- sudo cp http.conf /etc/fdfs
+</span></span><span class="line"><span class="cl"># ERROR - file: shared_func.c, line: 968, file /etc/fdfs/mime.types not exist
+</span></span><span class="line"><span class="cl">	- 从nginx的源码安装包中找/conf
+</span></span><span class="line"><span class="cl">	- sudo cp mime.types /etc/fdfs
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>
+<p>通过浏览器请求服务器下载文件: 404 Not Found</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err">http://192.168.1.100/group1/M00/00/00/wKj3h1vJRPeAA9KEAAAIZMjR0rI076.jpg
+</span></span></span><span class="line"><span class="cl"><span class="err"># 错误信息
+</span></span></span><span class="line"><span class="cl"><span class="err">open() &#34;/usr/local/nginx/zyFile2/group1/M00/00/00/wKj3h1vJSOqAM6RHAAvqH_kipG8229.jpg&#34; failed (2: No such file or directory), client: 192.168.247.1, server: localhost, request: &#34;GET /group1/M00/00/00/wKj3h1vJSOqAM6RHAAvqH_kipG8229.jpg HTTP/1.1&#34;, host: &#34;192.168.247.135&#34;
+</span></span></span><span class="line"><span class="cl"><span class="err">服务器在查找资源时候, 找的位置不对, 需要给服务器指定一个正确的位置, 如何指定?
+</span></span></span><span class="line"><span class="cl"><span class="err">	- 资源在哪? 在存储节点的存储目录中 store_path0
+</span></span></span><span class="line"><span class="cl"><span class="err">	- 如何告诉服务器资源在这? 在服务器端添加location处理
+</span></span></span><span class="line"><span class="cl"><span class="err">locatioin /group1/M00/00/00/wKj3h1vJSOqAM6RHAAvqH_kipG8229.jpg
+</span></span></span><span class="line"><span class="cl"><span class="err">location /group1/M00/00/00/
+</span></span></span><span class="line"><span class="cl"><span class="err">location /group1/M00/
+</span></span></span><span class="line"><span class="cl"><span class="err">location /group1/M00/
+</span></span></span><span class="line"><span class="cl"><span class="err">{
+</span></span></span><span class="line"><span class="cl"><span class="err">	# 告诉服务器资源的位置
+</span></span></span><span class="line"><span class="cl"><span class="err">	root /home/robin/fastdfs/storage/data;
+</span></span></span><span class="line"><span class="cl"><span class="err">	ngx_fastdfs_module;
+</span></span></span><span class="line"><span class="cl"><span class="err">}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="3-数据库表">3. 数据库表
+</h2><h3 id="31-数据库操作">3.1 数据库操作
+</h3><ol>
+<li>
+<p>创建一个名称为cloud_disk的数据库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">cloud_disk</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>删除数据库cloud_disk</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">drop</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">cloud_disk</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>使用数据库 cloud_disk</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">use</span><span class="w"> </span><span class="n">cloud_disk</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="32-数据库建表">3.2 数据库建表
+</h3><ol>
+<li>
+<p>用户信息表  &ndash;  user</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>id</td>
+          <td>用户序号，自动递增，主键</td>
+      </tr>
+      <tr>
+          <td>name</td>
+          <td>用户名字</td>
+      </tr>
+      <tr>
+          <td>nickname</td>
+          <td>用户昵称</td>
+      </tr>
+      <tr>
+          <td>phone</td>
+          <td>手机号码</td>
+      </tr>
+      <tr>
+          <td>email</td>
+          <td>邮箱</td>
+      </tr>
+      <tr>
+          <td>password</td>
+          <td>密码</td>
+      </tr>
+      <tr>
+          <td>createtime</td>
+          <td>时间</td>
+      </tr>
+  </tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="kt">BIGINT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="kp">AUTO_INCREMENT</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">nickname</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">password</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">phone</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">15</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">createtime</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">100</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">uq_nickname</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">nickname</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">uq_name</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">NAME</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>文件信息表  - user_file_list</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th style="text-align: left">解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>md5</td>
+          <td style="text-align: left">文件md5, 识别文件的唯一表示(身份证号)</td>
+      </tr>
+      <tr>
+          <td>file_id</td>
+          <td style="text-align: left">文件id-/group1/M00/00/00/xxx.png</td>
+      </tr>
+      <tr>
+          <td>url</td>
+          <td style="text-align: left">文件url 192.168.1.2:80/group1/M00/00/00/xxx.png - 下载的时候使用</td>
+      </tr>
+      <tr>
+          <td>size</td>
+          <td style="text-align: left">文件大小, 以字节为单位</td>
+      </tr>
+      <tr>
+          <td>type</td>
+          <td style="text-align: left">文件类型： png, zip, mp4……</td>
+      </tr>
+      <tr>
+          <td>fileName</td>
+          <td style="text-align: left">文件名</td>
+      </tr>
+      <tr>
+          <td>count</td>
+          <td style="text-align: left">文件引用计数， 默认为1    每增加一个用户拥有此文件，此计数器+1</td>
+      </tr>
+  </tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="nf">user_file_list</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">user</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">md5</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">createtime</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">filename</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">shared_status</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">pv</span><span class="w"> </span><span class="kt">INT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>用户文件列表  -  user_file_list</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>user</td>
+          <td>文件所属用户</td>
+      </tr>
+      <tr>
+          <td>md5</td>
+          <td>文件md5</td>
+      </tr>
+      <tr>
+          <td>createtime</td>
+          <td>文件创建时间</td>
+      </tr>
+      <tr>
+          <td>filename</td>
+          <td>文件名字</td>
+      </tr>
+      <tr>
+          <td>shared_status</td>
+          <td>共享状态, 0为没有共享， 1为共享</td>
+      </tr>
+      <tr>
+          <td>pv</td>
+          <td>文件下载量，默认值为0，下载一次加1</td>
+      </tr>
+  </tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="nf">user_file_list</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">user</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">md5</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">createtime</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">filename</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">shared_status</span><span class="w"> </span><span class="kt">INT</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">pv</span><span class="w"> </span><span class="kt">INT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>用户文件数量表  -  user_file_count</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>user</td>
+          <td>文件所属用户</td>
+      </tr>
+      <tr>
+          <td>count</td>
+          <td>拥有文件的数量</td>
+      </tr>
+  </tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="nf">user_file_count</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">user</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">count</span><span class="w"> </span><span class="kt">INT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>共享文件列表  -  share_file_list</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>字段</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>user</td>
+          <td>文件所属用户</td>
+      </tr>
+      <tr>
+          <td>md5</td>
+          <td>文件md5</td>
+      </tr>
+      <tr>
+          <td>createtime</td>
+          <td>文件共享时间</td>
+      </tr>
+      <tr>
+          <td>filename</td>
+          <td>文件名字</td>
+      </tr>
+      <tr>
+          <td>pv</td>
+          <td>文件下载量，默认值为1，下载一次加1</td>
+      </tr>
+  </tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="nf">share_file_list</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">user</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">md5</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">createtime</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">filename</span><span class="w"> </span><span class="kt">VARCHAR</span><span class="w"> </span><span class="p">(</span><span class="mi">128</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">pv</span><span class="w"> </span><span class="kt">INT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="复习">复习
+</h2><ol>
+<li>
+<p>fastCGI</p>
+<ol>
+<li>
+<p>是什么?</p>
+<ul>
+<li>运行在服务器端的代码, 帮助服务器处理客户端提交的动态请求</li>
+</ul>
+</li>
+<li>
+<p>干什么</p>
+<ul>
+<li>帮助服务器处理客户端提交的动态请求</li>
+</ul>
+</li>
+<li>
+<p>怎么用?</p>
+<ul>
+<li>
+<p>nginx如何转发数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 分析出客户端请求对应的指令 -- /test
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">location</span> <span class="s">/test</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 转发出去
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">fastcgi_pass</span> <span class="s">地址:端口</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">include</span> <span class="s">fastcgi.conf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>fastcgi如何接收数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 启动, 通过spawn-fcgi启动</span>
+</span></span><span class="line"><span class="cl">spawn-fcgi -a IP -p port -f ./fcgi
+</span></span><span class="line"><span class="cl"><span class="c1"># 编写fastCGI程序的时候</span>
+</span></span><span class="line"><span class="cl"> - 接收数据: 调用读终端的函数就是接收数据
+</span></span><span class="line"><span class="cl"> - 发送数据: 调用写终端的函数就是发送数据
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>fastcgi如何处理数据</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 编写登录的fastCgI程序
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="nf">FCGI_Accept</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1. 接收登录信息 -&gt; 环境变量中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// post -&gt; 读数据块的长度 CONTENT-LENGTH
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// get -&gt; 从请求行的第二部分读 QUEERY_STRING
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 2. 处理数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 3. 回发结果 -&gt; 格式假设是json
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Content-type: application/json&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;{</span><span class="se">\&#34;</span><span class="s">status</span><span class="se">\&#34;</span><span class="s">:</span><span class="se">\&#34;</span><span class="s">OK</span><span class="se">\&#34;</span><span class="s">}&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_summary/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_summary</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_upload-filelist-download/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_Upload Filelist Download</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_css-upload/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_css Upload</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_login/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_login</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_fastcgi/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_fastCGI</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Misaki
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计 <br />
+
+        
+        <span>
+            ICO 由 
+            <a href="https://www.flaticon.com/free-icons/halloween-party" 
+               title="Halloween party icons created by Pixelmeetup - Flaticon" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                Pixelmeetup
+            </a> 设计
+        </span>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/misaki-page/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

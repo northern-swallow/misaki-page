@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="##1. Location语法\n语法规则\n1 2 3 4 5 6 location [=|~|~*|^~] /uri/ { … } 正则表达式中的特殊字符: - . () {} [] * + ? Location优先级说明\n在nginx的location和配置中location的顺序没有太大关系。 与location表达式的类型有关。 相同类型的表达式，字符串长的会优先匹配。 location表达式类型\n">
+<title>Dfs_summary</title>
+
+<link rel='canonical' href='https://northern-swallow.github.io/misaki-page/p/dfs_summary/'>
+
+<link rel="stylesheet" href="/misaki-page/scss/style.min.1588b590a5e38dea5387567d98019f1a5daaddc2fca3ecdce862aceecaf453d9.css"><meta property='og:title' content="Dfs_summary">
+<meta property='og:description' content="##1. Location语法\n语法规则\n1 2 3 4 5 6 location [=|~|~*|^~] /uri/ { … } 正则表达式中的特殊字符: - . () {} [] * + ? Location优先级说明\n在nginx的location和配置中location的顺序没有太大关系。 与location表达式的类型有关。 相同类型的表达式，字符串长的会优先匹配。 location表达式类型\n">
+<meta property='og:url' content='https://northern-swallow.github.io/misaki-page/p/dfs_summary/'>
+<meta property='og:site_name' content='Misaki'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-18T12:19:10&#43;08:00'/><meta property='article:modified_time' content='2025-03-18T12:19:10&#43;08:00'/>
+<meta name="twitter:title" content="Dfs_summary">
+<meta name="twitter:description" content="##1. Location语法\n语法规则\n1 2 3 4 5 6 location [=|~|~*|^~] /uri/ { … } 正则表达式中的特殊字符: - . () {} [] * + ? Location优先级说明\n在nginx的location和配置中location的顺序没有太大关系。 与location表达式的类型有关。 相同类型的表达式，字符串长的会优先匹配。 location表达式类型\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/misaki-page/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/misaki-page/img/avatar_hu_9586ef9abeecc997.jpg" width="300"
+                            height="421" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/misaki-page">Misaki</a></h1>
+            <h2 class="site-description">その声お、もう一度聞かせて、Yoħanna</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/390463666'
+                        target="_blank"
+                        title="bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/northern-swallow'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/misaki-page/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/en/" >English</option>
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#2-项目总结">2. 项目总结</a></li>
+    <li><a href="#3-项目提炼">3. 项目提炼</a></li>
+    <li><a href="#4-存储节点反向代理">4. 存储节点反向代理</a></li>
+    <li><a href="#5-https">5. https</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/misaki-page/categories/c&#43;&#43;_%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" >
+                C&#43;&#43;_分布式文件系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/misaki-page/p/dfs_summary/">Dfs_summary</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-03-18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>##1. Location语法</p>
+<ol>
+<li>
+<p>语法规则</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">location</span> <span class="s">[=|~|~*|^~]</span> <span class="s">/uri/</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span> 
+</span></span><span class="line"><span class="cl">    <span class="kn">…</span> 
+</span></span><span class="line"><span class="cl"><span class="err">}</span>
+</span></span><span class="line"><span class="cl"><span class="s">正则表达式中的特殊字符:</span>
+</span></span><span class="line"><span class="cl"><span class="s">-</span> <span class="s">.</span> <span class="s">()</span> <span class="p">{}</span> <span class="kn">[]</span> <span class="s">*</span> <span class="s">+</span> <span class="s">?</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Location优先级说明</p>
+<ul>
+<li>在nginx的location和配置中location的顺序没有太大关系。</li>
+<li>与location表达式的类型有关。</li>
+<li><strong>相同类型的表达式，字符串长的会优先匹配</strong>。</li>
+</ul>
+</li>
+<li>
+<p>location表达式类型</p>
+<ul>
+<li>
+<p>~ 表示执行一个正则匹配，区分大小写</p>
+</li>
+<li>
+<p>~* 表示执行一个正则匹配，不区分大小写</p>
+</li>
+<li>
+<p>^~  表示普通字符匹配。使用前缀匹配。如果匹配成功，则不再匹配其他location。</p>
+</li>
+<li>
+<p>= 进行普通字符精确匹配。也就是完全匹配。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>匹配模式及优先级顺序(高 -&gt; 低):</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>location = /uri</th>
+          <th>=开头表示精确匹配，只有完全匹配上才能生效。   一旦匹配成功，则不再查找其他匹配项。</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>location ^~ /uri</td>
+          <td>^~ 开头对URL路径进行前缀匹配，并且在正则之前。   一旦匹配成功，则不再查找其他匹配项。   需要考虑先后顺序, 如:       <a class="link" href="http://localhost/helloworld/test/a.html"  target="_blank" rel="noopener"
+    >http://localhost/helloworld/test/a.html</a></td>
+      </tr>
+      <tr>
+          <td>location   ~   pattern   location  ~* pattern</td>
+          <td>~  开头表示区分大小写的正则匹配。   ~*开头表示不区分大小写的正则匹配。</td>
+      </tr>
+      <tr>
+          <td>location /uri</td>
+          <td>不带任何修饰符，也表示前缀匹配，但是在正则匹配之后。</td>
+      </tr>
+      <tr>
+          <td>location   /</td>
+          <td>通用匹配，任何未匹配到其它location的请求都会匹配到，相当于switch中的default。</td>
+      </tr>
+  </tbody>
+</table></div>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">客户端:</span> <span class="s">http://localhost/helloworld/test/a.html</span>
+</span></span><span class="line"><span class="cl"><span class="s">客户端:</span> <span class="s">http://localhost/helloworld/test/</span>
+</span></span><span class="line"><span class="cl"><span class="s">/helloworld/test/a.html</span>
+</span></span><span class="line"><span class="cl"><span class="s">/helloworld/test/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">location</span> <span class="s">/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/helloworld/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/helloworld/test/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="p">=</span><span class="s">/helloworld/test/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">http://localhost/helloworld/test/a.html</span>
+</span></span><span class="line"><span class="cl"><span class="s">location</span> <span class="s">^~</span> <span class="s">/helloworld/test/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">^~</span> <span class="s">/login/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">http://localhost/helloworld/test/a.JPG</span>
+</span></span><span class="line"><span class="cl"><span class="s">location</span> <span class="p">~</span><span class="sr">*</span> <span class="s">\.[jpg|png]</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">http://192.168.1.100/login/hello/world/login.html</span>
+</span></span><span class="line"><span class="cl"><span class="s">/login/hello/world/login.html</span>
+</span></span><span class="line"><span class="cl"><span class="s">location</span> <span class="s">/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/login/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/login/hello/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/login/hello/world/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="p">~</span> <span class="sr">/group[1-9]/M0[0-9]</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>练习题</p>
+<p><img src="/misaki-page/p/dfs_summary/1532312595449.png"
+	width="580"
+	height="704"
+	srcset="/misaki-page/p/dfs_summary/1532312595449_hu_81f46c0465156527.png 480w, /misaki-page/p/dfs_summary/1532312595449_hu_7c509e49a1dbfa59.png 1024w"
+	loading="lazy"
+	
+		alt="1532312595449"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="82"
+		data-flex-basis="197px"
+	
+></p>
+<p>匹配示例:</p>
+<ul>
+<li>/ -&gt; configuration</li>
+<li>/index.html -&gt; configuration</li>
+<li>/documents/document.html -&gt;      configuration C
+<ul>
+<li>/documents/</li>
+<li>/</li>
+</ul>
+</li>
+<li>/images/1.gif -&gt; configuration  D
+<ul>
+<li>/images/</li>
+<li>/</li>
+</ul>
+</li>
+<li>/documents/1.jpg -&gt;      configuration  E</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-项目总结">2. 项目总结
+</h2><p><img src="/misaki-page/p/dfs_summary/1532331759370.png"
+	width="928"
+	height="521"
+	srcset="/misaki-page/p/dfs_summary/1532331759370_hu_cfcd47b7770ddeef.png 480w, /misaki-page/p/dfs_summary/1532331759370_hu_b088aff0418cea5.png 1024w"
+	loading="lazy"
+	
+		alt="1532331759370"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="178"
+		data-flex-basis="427px"
+	
+></p>
+<ol>
+<li>客户端
+<ul>
+<li>Qt
+<ul>
+<li>了解了Qt中http通信</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>nginx反向代理服务器
+<ul>
+<li>为web服务器服务</li>
+<li>web服务器需要集群</li>
+</ul>
+</li>
+<li>web服务器 - nginx
+<ul>
+<li>处理静态请求 - &gt; 访问服务器文件</li>
+<li>动态请求 -&gt; 客户端给服务器提交的数据
+<ul>
+<li>借助fastCGI进行处理
+<ul>
+<li>讲的是单线程处理方式 - API</li>
+<li>也可以多线程处理 -&gt; 另外的API</li>
+<li>使用spawn-fcgi启动</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>mysql
+<ul>
+<li>关系型数据库 - 服务器端</li>
+<li>存储什么?
+<ul>
+<li>项目中所有用到的数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>redis
+<ul>
+<li>非关系型数据库 - 服务器端使用</li>
+<li>数据默认在内存, 不需要sql语句, 不需要数据库表</li>
+<li>键值对存储, 操作数据使用的是命令</li>
+<li>和关系型数据库配合使用</li>
+<li>存储服务器端经常访问的数据</li>
+</ul>
+</li>
+<li>fastDFS
+<ul>
+<li>分布式文件系统</li>
+<li>追踪器, 存储节点, 客户端</li>
+<li>存储节点的集群
+<ul>
+<li>横向扩容 -&gt; 增加容量
+<ul>
+<li>添加新组, 将新主机放到该组中</li>
+</ul>
+</li>
+<li>纵向扩容 -&gt; 备份
+<ul>
+<li>将主机放到已经存在的组中</li>
+</ul>
+</li>
+<li>存储用户上传的所有的文件</li>
+<li>给用户提供下载服务器</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-项目提炼">3. 项目提炼
+</h2><ol>
+<li>做的是文件服务器
+<ul>
+<li>电商网站</li>
+<li>旅游网站</li>
+<li>租房</li>
+<li>装修公司</li>
+<li>医院</li>
+<li>短视频网站</li>
+</ul>
+</li>
+<li>需要什么?
+<ul>
+<li>首先需要的是fastDFS
+<ul>
+<li>配置环境</li>
+<li>扩容</li>
+</ul>
+</li>
+<li>操作fastDFS - 客户端
+<ul>
+<li>web</li>
+<li>桌面终端 - Qt</li>
+</ul>
+</li>
+<li>数据库操作
+<ul>
+<li>mysql</li>
+<li>oralce</li>
+</ul>
+</li>
+<li>有一个web服务器 - Nginx
+<ul>
+<li>静态资源部署</li>
+<li>动态请求 - 编写fastCGI程序
+<ul>
+<li>注册</li>
+<li>登录</li>
+<li>上传</li>
+<li>下载</li>
+<li>秒传</li>
+<li>文件列表的获取</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>redis
+<ul>
+<li>存储服务器访问比较频繁的数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="4-存储节点反向代理">4. 存储节点反向代理
+</h2><p><img src="/misaki-page/p/dfs_summary/1532338125390.png"
+	width="463"
+	height="501"
+	srcset="/misaki-page/p/dfs_summary/1532338125390_hu_e9262c746f366d28.png 480w, /misaki-page/p/dfs_summary/1532338125390_hu_8f0a03770c55e025.png 1024w"
+	loading="lazy"
+	
+		alt="1532338125390"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="92"
+		data-flex-basis="221px"
+	
+></p>
+<blockquote>
+<p><a class="link" href="http://192.168.31.109:80/group1/M00/00/00/wKgfbViy2Z2AJ-FTAaM3As"  target="_blank" rel="noopener"
+    >http://192.168.31.109:80/group1/M00/00/00/wKgfbViy2Z2AJ-FTAaM3As</a>g3Z0782.mp4&quot;</p>
+<p><a class="link" href="http://192.168.31.109:80/group2/M00/00/00/wKgfbViy2Z2AJ-FTAaM3As"  target="_blank" rel="noopener"
+    >http://192.168.31.109:80/group2/M00/00/00/wKgfbViy2Z2AJ-FTAaM3As</a>g3Z0782.mp4&quot;</p></blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">上图的反向代理服务器代理的是每个存储节点上部署的Nginx</span>
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">每个存储节点上的Nginx的职责:</span> <span class="s">解析用户的http请求,</span> <span class="s">帮助用户快速下载文件</span>
+</span></span><span class="line"><span class="cl"><span class="s">客户端上传了一个文件,</span> <span class="s">被存储到了fastDFS上,</span> <span class="s">得到一个文件ID</span>
+</span></span><span class="line"><span class="cl">	<span class="s">/group1/M00/00/00/wKgfbViy2Z2AJ-FTAaM3Asg3Z0782.mp4&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">因为存储节点有若干个,</span> <span class="s">所有下载的时候不知道对应的存储节点的访问地址</span>
+</span></span><span class="line"><span class="cl"><span class="s">给存储节点上的nginx</span> <span class="s">web服务器添加反向代理服务器之后,</span> <span class="s">下载的访问地址:</span> 
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">只需要知道nginx反向代理服务器的地址就可以了:</span> <span class="mi">192</span><span class="s">.168.31.109</span>
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">访问的url:</span> 
+</span></span><span class="line"><span class="cl">	   <span class="s">http://192.168.31.109/group1/M00/00/00/wKgfbViy2Z2AJ-FTAaM3Asg3Z0782.mp4</span>
+</span></span><span class="line"><span class="cl"><span class="s">客户端的请求发送给了nginx反向代理服务器</span>
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">反向代理服务器不处理请求,</span> <span class="s">只转发,</span> <span class="s">转发给存储节点上的nginx服务器</span>
+</span></span><span class="line"><span class="cl"><span class="s">反向代理服务器的配置</span> <span class="s">-</span> <span class="s">nginx.conf</span>
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">找出处理指令:</span> <span class="s">去掉协议,</span> <span class="s">iP/域名,</span> <span class="s">末尾文件名,</span> <span class="s">?和后边的字符串</span>
+</span></span><span class="line"><span class="cl">		<span class="s">-</span> <span class="s">/group1/M00/00/00/</span> <span class="s">-</span> <span class="s">完整的处理指令</span> 
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">添加location</span>
+</span></span><span class="line"><span class="cl"><span class="s">server</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kn">location</span>  <span class="s">/group1/M00</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1"># 数据转发, 设置转发地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">proxy_pass</span> <span class="s">http://test.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="kn">location</span>  <span class="s">/group2/M00</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1"># 数据转发, 设置转发地址
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">proxy_pass</span> <span class="s">http://test1.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">upstream</span> <span class="s">test.com</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># fastDFS存储节点的地址, 因为存储节点上安装了nginx, 安装的nginx作为web服务器的角色
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">server</span> <span class="mi">192</span><span class="s">.168.31.100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">server</span> <span class="mi">192</span><span class="s">.168.31.101</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">server</span> <span class="mi">192</span><span class="s">.168.31.102</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">upstream</span> <span class="s">test1.com</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># fastDFS存储节点的地址, 因为存储节点上安装了nginx, 安装的nginx作为web服务器的角色
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">server</span> <span class="mi">192</span><span class="s">.168.32.100</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">server</span> <span class="mi">192</span><span class="s">.168.33.101</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">server</span> <span class="mi">192</span><span class="s">.168.34.102</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl"><span class="c1"># ===================================
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">存储节点上的web服务器的配置</span>
+</span></span><span class="line"><span class="cl"><span class="s">存储节点1</span>
+</span></span><span class="line"><span class="cl">    <span class="s">location</span>  <span class="s">/group1/M00</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 请求处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">root</span> <span class="s">请求的资源的根目录</span><span class="p">;</span> <span class="kn">//</span> <span class="s">存储节点的store_path0对应的路径+data</span>
+</span></span><span class="line"><span class="cl">    	<span class="s">ngx_fastdfs_module</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">location</span>  <span class="s">/group1/M01</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 请求处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">root</span> <span class="s">请求的资源的根目录</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    	<span class="kn">ngx_fastdfs_module</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">存储节点2</span>
+</span></span><span class="line"><span class="cl">	<span class="s">location</span>  <span class="s">/group2/M00</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 请求处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">root</span> <span class="s">请求的资源的根目录</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    	<span class="kn">ngx_fastdfs_module</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">location</span>  <span class="s">/group2/M01</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 请求处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">root</span> <span class="s">请求的资源的根目录</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    	<span class="kn">ngx_fastdfs_module</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">存储节点3</span>
+</span></span><span class="line"><span class="cl">	<span class="s">location</span>  <span class="s">/group3/M00</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 请求处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">root</span> <span class="s">请求的资源的根目录</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    	<span class="kn">ngx_fastdfs_module</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">location</span>  <span class="s">/group3/M01</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 请求处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    	<span class="kn">root</span> <span class="s">请求的资源的根目录</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    	<span class="kn">ngx_fastdfs_module</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="5-https">5. https
+</h2><p><img src="/misaki-page/p/dfs_summary/https1.png"
+	width="1834"
+	height="1080"
+	srcset="/misaki-page/p/dfs_summary/https1_hu_de39521b36202db3.png 480w, /misaki-page/p/dfs_summary/https1_hu_749fcd977083212c.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="169"
+		data-flex-basis="407px"
+	
+></p>
+<blockquote>
+<ol>
+<li>在百度服务器端首先生成一个秘钥对 -&gt; 对公钥分发</li>
+<li>百度将公钥给到了CA认证机构, ca对私钥进行签名 -&gt; 生成了证书.</li>
+<li>第一步第二部只做一次</li>
+<li>客户端访问百度, 百度将ca生成的证书发送给客户端</li>
+<li>浏览器对收到的证书进行认证</li>
+<li>如果证书没有问题 -&gt; 使用ca的公钥将服务器的公钥从证书中取出</li>
+<li>我们得到了百度的公钥</li>
+<li>在浏览器端生成一个随机数, 使用得到的公钥进行加密, 发送给服务器</li>
+<li>服务器端使用私钥解密, 得到了随机数, 这个随机数就是对称加密的秘钥</li>
+<li>现在秘钥分发已经完成, 后边的通信使用的的对称加密的方式</li>
+</ol></blockquote>
+<blockquote>
+<ol>
+<li>
+<p>对称加密</p>
+<ul>
+<li>加解密秘钥是同一个</li>
+</ul>
+</li>
+<li>
+<p>非对称加密</p>
+<ul>
+<li>公钥, 私钥
+<ul>
+<li>rsa -&gt; 公钥私钥都是两个数字</li>
+<li>ecc -&gt; 椭圆曲线, 两个点</li>
+</ul>
+</li>
+<li>公钥加密, 私钥解密
+<ul>
+<li>数据传输的时候使用</li>
+</ul>
+</li>
+<li>私钥加密, 公钥解密
+<ul>
+<li>数字签名</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>哈希函数</p>
+<ul>
+<li>md5/ sha1/sha2</li>
+<li>得到散列值, 散列值是定长的</li>
+</ul>
+</li>
+<li>
+<p>消息认证码</p>
+<ul>
+<li>生成消息认证码: (将原始数据+共享秘钥) * 进行哈希运算 = 散列值</li>
+<li>验证消息认证码:
+<ul>
+<li>(接收的原始数据 + 共享秘钥) * 哈希运算 = 新的散列值</li>
+<li>新散列值和旧散列值进行比较, 看是不是相同</li>
+</ul>
+</li>
+<li>作用:
+<ul>
+<li>验证数据的一致性型</li>
+</ul>
+</li>
+<li>弊端:
+<ul>
+<li>两端共享秘钥必须相同, 共享秘钥分发困难</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>数字签名 -&gt; 目的告诉所有人这个数据的所有者是xxx, xxx就是拿私钥的人</p>
+<ul>
+<li>
+<p>生成一个非对称加密的密钥对</p>
+<ul>
+<li>公钥</li>
+<li>私钥</li>
+</ul>
+</li>
+<li>
+<p>生成签名:</p>
+<ul>
+<li>对原始数据进行哈希运算 -&gt; 散列值</li>
+<li>使用非对称加密的私钥, 对散列值进行签名(私钥加密) -&gt; 密文</li>
+<li>得到的密文就是数字签名</li>
+</ul>
+</li>
+<li>
+<p>签名的校验:</p>
+<ul>
+<li>校验这会收到签名者发送的数据
+<ul>
+<li>原始数据</li>
+<li>数字签名</li>
+</ul>
+</li>
+<li>对接收的数据进行哈希运算 -&gt; 散列值</li>
+<li>使用非对称加密的公钥, 对数字签名进行解密 -&gt; 明文 == 签名者生成的散列值</li>
+<li>校验者的散列值 和 签名者的散列值进行比较
+<ul>
+<li>相同 -&gt; 校验成功了, 数据属于签名的人</li>
+<li>失败 -&gt; 数据不属于签名的人</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>弊端:</p>
+<ul>
+<li>
+<p>接收公钥的人没有办法校验公钥的所有者</p>
+<p><img src="/misaki-page/p/dfs_summary/assets/1540545019204.png"
+	width="642"
+	height="353"
+	srcset="/misaki-page/p/dfs_summary/assets/1540545019204_hu_a0214b94cd99c745.png 480w, /misaki-page/p/dfs_summary/assets/1540545019204_hu_e847f162d9d9a647.png 1024w"
+	loading="lazy"
+	
+		alt="1540545019204"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="181"
+		data-flex-basis="436px"
+	
+></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>证书</p>
+<ul>
+<li>由一个受信赖的机构 (CA) 对某人的公钥进行数字签名
+<ul>
+<li>CA有一个密钥对
+<ul>
+<li>使用ca的私钥对某个人的公钥进行加密 -&gt; 证书
+<ul>
+<li>这个人 的公钥</li>
+<li>这个人的个人信息</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol></blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_upload-filelist-download/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_Upload Filelist Download</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_css-upload/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_css Upload</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_login/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_login</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_nginx-fastdfs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_nginx&#43;fastdfs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_fastcgi/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_fastCGI</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Misaki
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计 <br />
+
+        
+        <span>
+            ICO 由 
+            <a href="https://www.flaticon.com/free-icons/halloween-party" 
+               title="Halloween party icons created by Pixelmeetup - Flaticon" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                Pixelmeetup
+            </a> 设计
+        </span>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/misaki-page/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

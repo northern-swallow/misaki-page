@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="1. 登录和注册协议 1.1 注册协议 客户端\n1 2 3 4 5 6 7 8 9 10 # URL http://192.168.1.100:80/reg # post数据格式 { userName:xxxx, nickName:xxx, firstPwd:xxx, phone:xxx, email:xxx } 服务器端 - Nginx\n服务器端的配置\n">
+<title>Dfs_login</title>
+
+<link rel='canonical' href='https://northern-swallow.github.io/misaki-page/p/dfs_login/'>
+
+<link rel="stylesheet" href="/misaki-page/scss/style.min.1588b590a5e38dea5387567d98019f1a5daaddc2fca3ecdce862aceecaf453d9.css"><meta property='og:title' content="Dfs_login">
+<meta property='og:description' content="1. 登录和注册协议 1.1 注册协议 客户端\n1 2 3 4 5 6 7 8 9 10 # URL http://192.168.1.100:80/reg # post数据格式 { userName:xxxx, nickName:xxx, firstPwd:xxx, phone:xxx, email:xxx } 服务器端 - Nginx\n服务器端的配置\n">
+<meta property='og:url' content='https://northern-swallow.github.io/misaki-page/p/dfs_login/'>
+<meta property='og:site_name' content='Misaki'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-18T12:13:24&#43;08:00'/><meta property='article:modified_time' content='2025-03-18T12:13:24&#43;08:00'/>
+<meta name="twitter:title" content="Dfs_login">
+<meta name="twitter:description" content="1. 登录和注册协议 1.1 注册协议 客户端\n1 2 3 4 5 6 7 8 9 10 # URL http://192.168.1.100:80/reg # post数据格式 { userName:xxxx, nickName:xxx, firstPwd:xxx, phone:xxx, email:xxx } 服务器端 - Nginx\n服务器端的配置\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/misaki-page/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/misaki-page/img/avatar_hu_9586ef9abeecc997.jpg" width="300"
+                            height="421" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/misaki-page">Misaki</a></h1>
+            <h2 class="site-description">その声お、もう一度聞かせて、Yoħanna</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/390463666'
+                        target="_blank"
+                        title="bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/northern-swallow'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/misaki-page/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/en/" >English</option>
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-登录和注册协议">1. 登录和注册协议</a>
+      <ol>
+        <li><a href="#11-注册协议">1.1 注册协议</a></li>
+        <li><a href="#12-登录协议">1.2 登录协议</a></li>
+      </ol>
+    </li>
+    <li><a href="#2-单例模式">2. 单例模式</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/misaki-page/categories/c&#43;&#43;_%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" >
+                C&#43;&#43;_分布式文件系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/misaki-page/p/dfs_login/">Dfs_login</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-03-18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="1-登录和注册协议">1. 登录和注册协议
+</h2><h3 id="11-注册协议">1.1 注册协议
+</h3><ol>
+<li>
+<p>客户端</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err"># URL
+</span></span></span><span class="line"><span class="cl"><span class="err">http://192.168.1.100:80/reg
+</span></span></span><span class="line"><span class="cl"><span class="err"># post数据格式
+</span></span></span><span class="line"><span class="cl"><span class="err">{
+</span></span></span><span class="line"><span class="cl"><span class="err">	userName:xxxx,
+</span></span></span><span class="line"><span class="cl"><span class="err">    nickName:xxx,
+</span></span></span><span class="line"><span class="cl"><span class="err">    firstPwd:xxx,
+</span></span></span><span class="line"><span class="cl"><span class="err">    phone:xxx,
+</span></span></span><span class="line"><span class="cl"><span class="err">    email:xxx
+</span></span></span><span class="line"><span class="cl"><span class="err">}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>服务器端 - Nginx</p>
+<ul>
+<li>
+<p>服务器端的配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/reg</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 转发数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">fastcgi_pass</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">include</span> <span class="s">fastcgi.conf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>编写fastcgi程序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="nf">FCGI_Accept</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 1. 根据content-length得到post数据块的长度
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 2. 根据长度将post数据块读到内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 3. 解析json对象, 得到用户名, 密码, 昵称, 邮箱, 手机号
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 4. 连接数据库 - mysql, oracle
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 5. 查询, 看有没有用户名, 昵称冲突 -&gt; {&#34;code&#34;:&#34;003&#34;}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 6. 有冲突 - 注册失败, 通知客户端
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 7. 没有冲突 - 用户数据插入到数据库中
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 8. 成功-&gt; 通知客户端 -&gt; {&#34;code&#34;:&#34;002&#34;}
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// 9. 通知客户端回传的字符串的格式
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;content-type: application/json</span><span class="se">\r\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;{</span><span class="se">\&#34;</span><span class="s">code</span><span class="se">\&#34;</span><span class="s">:</span><span class="se">\&#34;</span><span class="s">002</span><span class="se">\&#34;</span><span class="s">}&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>服务器回复的数据格式:</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>成功</th>
+          <th>{&ldquo;code&rdquo;:&ldquo;002&rdquo;}</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>该用户已存在</td>
+          <td>{&ldquo;code&rdquo;:&ldquo;003&rdquo;}</td>
+      </tr>
+      <tr>
+          <td>失败</td>
+          <td>{&ldquo;code&rdquo;:&ldquo;004&rdquo;}</td>
+      </tr>
+  </tbody>
+</table></div>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="12-登录协议">1.2 登录协议
+</h3><ol>
+<li>
+<p>客户端</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="err">#URL
+</span></span></span><span class="line"><span class="cl"><span class="err">http://127.0.0.1:80/login
+</span></span></span><span class="line"><span class="cl"><span class="err"># post数据格式
+</span></span></span><span class="line"><span class="cl"><span class="err">{
+</span></span></span><span class="line"><span class="cl"><span class="err">    user:xxxx,
+</span></span></span><span class="line"><span class="cl"><span class="err">    pwd:xxx
+</span></span></span><span class="line"><span class="cl"><span class="err">}
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>服务器端</p>
+<ul>
+<li>
+<p>Nginx服务器配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/login</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 转发数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">fastcgi_pass</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">10001</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">include</span> <span class="s">fastcgi.conf</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>服务器回复数据格式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="c1">// 成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="s2">&#34;000&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;token&#34;</span><span class="p">:</span> <span class="s2">&#34;xxx&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 失败
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;code&#34;</span><span class="p">:</span> <span class="s2">&#34;001&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;token&#34;</span><span class="p">:</span> <span class="s2">&#34;faild&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ol>
+<h2 id="2-单例模式">2. 单例模式
+</h2><ol>
+<li>
+<p>单例模式的优点:</p>
+<ul>
+<li>在内存中只有一个对象, 节省内存空间</li>
+<li>避免频繁的创建销毁对象,可以提高性能</li>
+<li>避免对共享资源的多重占用</li>
+<li>可以全局访问</li>
+</ul>
+</li>
+<li>
+<p>单例模式的适用场景:</p>
+<ul>
+<li>
+<p>需要频繁实例化然后销毁的对象</p>
+</li>
+<li>
+<p>创建对象耗时过多或者耗资源过多,但又经常用到的对象</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">More</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">number</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...(</span><span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>有状态的工具类对象</p>
+</li>
+<li>
+<p>频繁访问数据库或文件的对象</p>
+</li>
+<li>
+<p>要求只有一个对象的场景</p>
+</li>
+</ul>
+</li>
+<li>
+<p>如何保证单例对象只有一个?</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 在类外部不允许进行new操作
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">class</span> <span class="n">Test</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="nl">public</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 1. 默认构造
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 2. 默认析构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// 3. 默认的拷贝构造
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 1. 构造函数私有化
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 2. 拷贝构造私有化
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>单例模式实现方式?</p>
+<ul>
+<li>
+<p>懒汉模式 - 单例对象在使用的时候被创建出来, 线程安全问题需要考虑</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Test</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">static</span> <span class="n">Test</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span><span class="p">(</span><span class="n">m_test</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">     		<span class="n">m_test</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Test</span><span class="p">();</span>       
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">m_test</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Test</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Test</span><span class="p">(</span><span class="k">const</span> <span class="n">Test</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 静态变量使用之前必须初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">static</span> <span class="n">Test</span><span class="o">*</span> <span class="n">m_test</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">Test</span><span class="o">*</span> <span class="n">Test</span><span class="o">::</span><span class="n">m_test</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>	<span class="c1">// 初始化
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>饿汉模式 - 单例对象在使用之前被创建出来</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Test</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">static</span> <span class="n">Test</span><span class="o">*</span> <span class="n">getInstance</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="n">m_test</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Test</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">Test</span><span class="p">(</span><span class="k">const</span> <span class="n">Test</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 静态变量使用之前必须初始化
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">static</span> <span class="n">Test</span><span class="o">*</span> <span class="n">m_test</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">Test</span><span class="o">*</span> <span class="n">Test</span><span class="o">::</span><span class="n">m_test</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Test</span><span class="p">();</span>	<span class="c1">// 初始化
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>QRegExp类</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">QRegExp</span><span class="o">::</span><span class="n">QRegExp</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">QRegExp</span><span class="o">::</span><span class="n">QRegExp</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">pattern</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">CaseSensitivity</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">CaseSensitive</span><span class="p">,</span> <span class="n">PatternSyntax</span> <span class="n">syntax</span> <span class="o">=</span> <span class="n">RegExp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">-</span> <span class="nl">pattern</span><span class="p">:</span> <span class="err">正则表达式</span><span class="p">,</span> <span class="err">该对象继续数据校验的规则</span>
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">QRegExp</span><span class="o">::</span><span class="n">exactMatch</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span> <span class="k">const</span>
+</span></span><span class="line"><span class="cl">    <span class="o">-</span> <span class="nl">str</span><span class="p">:</span> <span class="err">被校验的字符串</span>
+</span></span><span class="line"><span class="cl">    <span class="o">-</span> <span class="err">返回值</span><span class="o">:</span> <span class="err">匹配成功</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span> <span class="err">失败</span><span class="o">:</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 重新给正则对象指定匹配规则
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">QRegExp</span><span class="o">::</span><span class="n">setPattern</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">pattern</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">-</span> <span class="nl">pattern</span><span class="p">:</span> <span class="err">正则表达式</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>鼠标拖动窗口移动, 左上角坐标求解方法:</p>
+<p><img src="/misaki-page/p/dfs_login/1528007074492.png"
+	width="553"
+	height="342"
+	srcset="/misaki-page/p/dfs_login/1528007074492_hu_656993138525d1c4.png 480w, /misaki-page/p/dfs_login/1528007074492_hu_bf72020c164a0e0a.png 1024w"
+	loading="lazy"
+	
+		alt="1528007074492"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="161"
+		data-flex-basis="388px"
+	
+></p>
+<blockquote>
+<ol>
+<li>
+<p>在鼠标按下还没有移动的时候求差值</p>
+<p>差值 = 鼠标当前位置 - 屏幕左上角的点</p>
+</li>
+<li>
+<p>鼠标移动过程中</p>
+<p>屏幕左上角的点 = 鼠标当前位置 - 差值</p>
+</li>
+</ol></blockquote>
+</li>
+<li>
+<p>QSS参考资料</p>
+<ul>
+<li>&lt;https://blog.csdn.net/liang19890820/article/details/51691212</li>
+</ul>
+</li>
+<li>
+<p>通过样式函数给控件设置样式</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">setStyleSheet</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">styleSheet</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="o">-</span> <span class="err">参数</span><span class="nl">styleSheet</span><span class="p">:</span> <span class="err">样式字符串</span><span class="p">,</span> <span class="n">css格式</span>
+</span></span><span class="line"><span class="cl">	<span class="o">-</span> <span class="err">在</span><span class="n">QT中参照帮助文档也可以</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/misaki-page/p/dfs_login/1531966938946.png"
+	width="317"
+	height="381"
+	srcset="/misaki-page/p/dfs_login/1531966938946_hu_db39e3c539fc86ec.png 480w, /misaki-page/p/dfs_login/1531966938946_hu_354551c32bce28b4.png 1024w"
+	loading="lazy"
+	
+		alt="1531966938946"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="83"
+		data-flex-basis="199px"
+	
+></p>
+</li>
+<li>
+<p>sourceInsight</p>
+<p><img src="/misaki-page/p/dfs_login/1531987944556.png"
+	width="576"
+	height="308"
+	srcset="/misaki-page/p/dfs_login/1531987944556_hu_f5c3a0ec95e3b76b.png 480w, /misaki-page/p/dfs_login/1531987944556_hu_14606fb60c4548d0.png 1024w"
+	loading="lazy"
+	
+		alt="1531987944556"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="187"
+		data-flex-basis="448px"
+	
+></p>
+<p>![1531988036743](D:/BaiduNetdiskDownload/C++就业班全套课程（视频+讲义+代码+软件）/12.项目2：fastDFS 分布式文件系统/day06-login/day06-login/01-教学资料/day06/1531988036743.png)</p>
+<p><img src="/misaki-page/p/dfs_login/1531988132774.png"
+	width="674"
+	height="378"
+	srcset="/misaki-page/p/dfs_login/1531988132774_hu_67ce833bb721ea70.png 480w, /misaki-page/p/dfs_login/1531988132774_hu_207a072d16815411.png 1024w"
+	loading="lazy"
+	
+		alt="1531988132774"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="178"
+		data-flex-basis="427px"
+	
+></p>
+<p><img src="/misaki-page/p/dfs_login/1531988185971.png"
+	width="257"
+	height="240"
+	srcset="/misaki-page/p/dfs_login/1531988185971_hu_2f8456394e774c5e.png 480w, /misaki-page/p/dfs_login/1531988185971_hu_3440447883d95dbf.png 1024w"
+	loading="lazy"
+	
+		alt="1531988185971"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="107"
+		data-flex-basis="257px"
+	
+></p>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 刷新窗口
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 什么时候被回调?
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 1. 窗口第一次现实的时候
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 2. 窗口被覆盖, 又重新显示
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 3. 最大化, 最小化
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 4. 手动重绘 - &gt; 调用一个api : [slot] void QWidget::update()
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 函数内部写的绘图动作 -&gt; QPainter
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">[</span><span class="n">virtual</span> <span class="n">protected</span><span class="p">]</span> <span class="kt">void</span> <span class="n">QWidget</span><span class="o">::</span><span class="nf">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span> <span class="o">*</span><span class="n">event</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">-</span> <span class="nf">QPainter</span><span class="p">(</span><span class="n">QPaintDevice</span> <span class="o">*</span><span class="n">device</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="err">参数应该</span><span class="n">this</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 这个点是窗口左上角坐标
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">move</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">move</span><span class="p">(</span><span class="k">const</span> <span class="n">QPoint</span> <span class="o">&amp;</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Qt中使用正则表达式进行数据校验:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// 使用的类: QRegExp
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 1. 构造对象
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">QRegExp</span><span class="o">::</span><span class="n">QRegExp</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="n">QRegExp</span><span class="o">::</span><span class="n">QRegExp</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">pattern</span><span class="p">,</span> <span class="n">Qt</span><span class="o">::</span><span class="n">CaseSensitivity</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">Qt</span><span class="o">::</span><span class="n">CaseSensitive</span><span class="p">,</span> <span class="n">PatternSyntax</span> <span class="n">syntax</span> <span class="o">=</span> <span class="n">RegExp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">-</span> <span class="nl">pattern</span><span class="p">:</span> <span class="err">正则表达式</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 2. 如何使用正则对象进行数据校验
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">bool</span> <span class="n">QRegExp</span><span class="o">::</span><span class="n">exactMatch</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="o">-</span> <span class="err">参数</span><span class="nl">str</span><span class="p">:</span> <span class="err">要校验的字符串</span>
+</span></span><span class="line"><span class="cl">	<span class="o">-</span> <span class="err">返回值</span><span class="o">:</span> <span class="err">匹配成功</span><span class="o">:</span> <span class="nb">true</span><span class="p">,</span> <span class="err">失败</span><span class="o">:</span> <span class="nb">false</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 3. 给正则对象指定匹配规则或者更换匹配规则
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="n">QRegExp</span><span class="o">::</span><span class="n">setPattern</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">pattern</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="o">-</span> <span class="err">参数</span><span class="nl">pattern</span><span class="p">:</span> <span class="err">新的正则表达式</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Qt中处理json</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="c1">// QJsonDocument
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 1. 将字符串-&gt; json对象/数组; 2. json对象,数组 -&gt; 格式化为字符串
+</span></span></span><span class="line"><span class="cl"><span class="c1">// QJsonObject -&gt; 处理json对象的   {}
+</span></span></span><span class="line"><span class="cl"><span class="c1">// QJsonArray  -&gt; 处理json数组		[]
+</span></span></span><span class="line"><span class="cl"><span class="c1">// QJsonValue  -&gt; 包装数据的, 字符串, 布尔, 整形, 浮点型, json对象, json数组
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>内存中的json数据 -&gt; 写磁盘</p>
+<p><img src="/misaki-page/p/dfs_login/assets/1540197804758.png"
+	width="473"
+	height="511"
+	srcset="/misaki-page/p/dfs_login/assets/1540197804758_hu_9b038653bc4092cc.png 480w, /misaki-page/p/dfs_login/assets/1540197804758_hu_62b383f444828a1d.png 1024w"
+	loading="lazy"
+	
+		alt="1540197804758"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="92"
+		data-flex-basis="222px"
+	
+></p>
+</li>
+<li>
+<p>磁盘中的json字符串 -&gt; 内存</p>
+<p><img src="/misaki-page/p/dfs_login/assets/1540197755128.png"
+	width="587"
+	height="570"
+	srcset="/misaki-page/p/dfs_login/assets/1540197755128_hu_22b22f5e0e3830e8.png 480w, /misaki-page/p/dfs_login/assets/1540197755128_hu_9fc5a46664f1db36.png 1024w"
+	loading="lazy"
+	
+		alt="1540197755128"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="102"
+		data-flex-basis="247px"
+	
+></p>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_summary/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_summary</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_upload-filelist-download/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_Upload Filelist Download</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_css-upload/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_css Upload</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_nginx-fastdfs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_nginx&#43;fastdfs</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_fastcgi/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_fastCGI</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Misaki
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计 <br />
+
+        
+        <span>
+            ICO 由 
+            <a href="https://www.flaticon.com/free-icons/halloween-party" 
+               title="Halloween party icons created by Pixelmeetup - Flaticon" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                Pixelmeetup
+            </a> 设计
+        </span>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/misaki-page/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

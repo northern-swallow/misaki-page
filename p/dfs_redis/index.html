@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 1. 数据库类型 1.1 基本概念 关系型数据库 - sql 操作数据必须要使用sql语句 数据存储在磁盘 存储的数据量大 举例: mysql oracle sqlite - 文件数据库 sql server 非关系数据库 - nosql 操作不使用sql语句 命令 数据默认存储在内存 速度快, 效率高 存储的数据量小 不需要数据库表 以键值对的方式存储的 1.2 关系/非关系型数据库搭配使用 ">
+<title>dfs_redis</title>
+
+<link rel='canonical' href='https://northern-swallow.github.io/misaki-page/p/dfs_redis/'>
+
+<link rel="stylesheet" href="/misaki-page/scss/style.min.1588b590a5e38dea5387567d98019f1a5daaddc2fca3ecdce862aceecaf453d9.css"><meta property='og:title' content="dfs_redis">
+<meta property='og:description' content=" 1. 数据库类型 1.1 基本概念 关系型数据库 - sql 操作数据必须要使用sql语句 数据存储在磁盘 存储的数据量大 举例: mysql oracle sqlite - 文件数据库 sql server 非关系数据库 - nosql 操作不使用sql语句 命令 数据默认存储在内存 速度快, 效率高 存储的数据量小 不需要数据库表 以键值对的方式存储的 1.2 关系/非关系型数据库搭配使用 ">
+<meta property='og:url' content='https://northern-swallow.github.io/misaki-page/p/dfs_redis/'>
+<meta property='og:site_name' content='Misaki'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-08T11:09:17&#43;08:00'/><meta property='article:modified_time' content='2025-03-08T11:09:17&#43;08:00'/>
+<meta name="twitter:title" content="dfs_redis">
+<meta name="twitter:description" content=" 1. 数据库类型 1.1 基本概念 关系型数据库 - sql 操作数据必须要使用sql语句 数据存储在磁盘 存储的数据量大 举例: mysql oracle sqlite - 文件数据库 sql server 非关系数据库 - nosql 操作不使用sql语句 命令 数据默认存储在内存 速度快, 效率高 存储的数据量小 不需要数据库表 以键值对的方式存储的 1.2 关系/非关系型数据库搭配使用 ">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/misaki-page/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/misaki-page/img/avatar_hu_9586ef9abeecc997.jpg" width="300"
+                            height="421" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/misaki-page">Misaki</a></h1>
+            <h2 class="site-description">その声お、もう一度聞かせて、Yoħanna</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/390463666'
+                        target="_blank"
+                        title="bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/northern-swallow'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/misaki-page/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/en/" >English</option>
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li></li>
+    <li><a href="#1-数据库类型">1. 数据库类型</a>
+      <ol>
+        <li><a href="#11-基本概念">1.1 基本概念</a></li>
+        <li><a href="#12-关系非关系型数据库搭配使用">1.2 关系/非关系型数据库搭配使用</a></li>
+      </ol>
+    </li>
+    <li><a href="#2-redis">2. Redis</a>
+      <ol>
+        <li><a href="#21-基本知识点">2.1 基本知识点</a></li>
+        <li><a href="#22-redis常用命令">2.2 redis常用命令</a></li>
+        <li><a href="#23-redis配置文件">2.3 redis配置文件</a></li>
+        <li><a href="#24-redis数据持久化">2.4 redis数据持久化</a></li>
+      </ol>
+    </li>
+    <li><a href="#3-hiredis的使用">3 hiredis的使用</a></li>
+    <li><a href="#4-复习">4. 复习</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/misaki-page/categories/c&#43;&#43;_%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" >
+                C&#43;&#43;_分布式文件系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/misaki-page/p/dfs_redis/">dfs_redis</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-03-08</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="">
+</h2><h2 id="1-数据库类型">1. 数据库类型
+</h2><h3 id="11-基本概念">1.1 基本概念
+</h3><ol>
+<li>关系型数据库 - sql
+<ul>
+<li>操作数据必须要使用sql语句</li>
+<li>数据存储在磁盘</li>
+<li>存储的数据量大</li>
+<li>举例:
+<ul>
+<li>mysql</li>
+<li>oracle</li>
+<li>sqlite - 文件数据库</li>
+<li>sql server</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>非关系数据库 - nosql
+<ul>
+<li>操作不使用sql语句
+<ul>
+<li>命令</li>
+</ul>
+</li>
+<li>数据默认存储在内存
+<ul>
+<li>速度快, 效率高</li>
+<li>存储的数据量小</li>
+</ul>
+</li>
+<li>不需要数据库表
+<ul>
+<li>以键值对的方式存储的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="12-关系非关系型数据库搭配使用">1.2 关系/非关系型数据库搭配使用
+</h3><p><img src="/misaki-page/p/dfs_redis/1.png"
+	width="588"
+	height="456"
+	srcset="/misaki-page/p/dfs_redis/1_hu_976ed30e0928f9e6.png 480w, /misaki-page/p/dfs_redis/1_hu_a383df4b65cd5e3d.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="128"
+		data-flex-basis="309px"
+	
+></p>
+<blockquote>
+<p>==RDBMS: Relational Database Management System==</p>
+<ol>
+<li>所有的数据默认存储在关系型数据库中</li>
+<li>客户端访问服务器, 有一些数据, 服务器需要频繁的查询数据
+<ul>
+<li>服务器首先将数据从关系型数据库中读出 -&gt; 第一次
+<ul>
+<li>将数据写入到redis中</li>
+</ul>
+</li>
+<li>客户端第二次包含以后访问服务器
+<ul>
+<li>服务器从redis中直接读数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol></blockquote>
+<h2 id="2-redis">2. Redis
+</h2><blockquote>
+<ol>
+<li>知道redis是什么?
+<ul>
+<li>非关系型数据库 也可以叫 内存数据库</li>
+</ul>
+</li>
+<li>能干什么?
+<ul>
+<li>存储访问频率高的数据</li>
+<li>共享内存
+<ul>
+<li>服务器端 -&gt; redis</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>怎么使用?
+<ul>
+<li>常用的操作命令
+<ul>
+<li>各种数据类型 -&gt; 会查</li>
+</ul>
+</li>
+<li>redis的配置文件</li>
+<li>redis的数据持久化</li>
+<li>写程序的时候如何对redis进行操作
+<ul>
+<li>客户端 -&gt; 服务器</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol></blockquote>
+<h3 id="21-基本知识点">2.1 基本知识点
+</h3><ol>
+<li>
+<p>安装包下载</p>
+<ul>
+<li>英文官方： <a class="link" href="https://redis.io/"  target="_blank" rel="noopener"
+    >https://redis.io/</a></li>
+<li>中文官方： <a class="link" href="http://redis.cn/"  target="_blank" rel="noopener"
+    >http://redis.cn/</a></li>
+</ul>
+</li>
+<li>
+<p>Redis安装</p>
+<ul>
+<li>make</li>
+<li>make install</li>
+</ul>
+</li>
+<li>
+<p>redis中的两个角色</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 服务器 - 启动</span>
+</span></span><span class="line"><span class="cl">redis-server	<span class="c1"># 默认启动</span>
+</span></span><span class="line"><span class="cl">redis-server confFileName <span class="c1"># 根据配置文件的设置启动</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 客户端</span>
+</span></span><span class="line"><span class="cl">redis-cli	<span class="c1"># 默认连接本地, 绑定了6379默认端口的服务器</span>
+</span></span><span class="line"><span class="cl">redis-cli -p 端口号
+</span></span><span class="line"><span class="cl">redis-cli -h IP地址 -p 端口 <span class="c1"># 连接远程主机的指定端口的redis</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过客户端关闭服务器</span>
+</span></span><span class="line"><span class="cl">shutdown
+</span></span><span class="line"><span class="cl"><span class="c1"># 客户端的测试命令</span>
+</span></span><span class="line"><span class="cl">ping <span class="o">[</span>MSG<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>redis中数据的组织格式</p>
+<ul>
+<li>键值对
+<ul>
+<li>key: 必须是字符串 - &ldquo;hello&rdquo;</li>
+<li>value: 可选的
+<ul>
+<li>String类型</li>
+<li>List类型</li>
+<li>Set类型</li>
+<li>SortedSet类型</li>
+<li>Hash类型</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>redis中常用数据类型</p>
+<ul>
+<li>String类型
+<ul>
+<li>字符串</li>
+</ul>
+</li>
+<li>List类型
+<ul>
+<li>存储多个string字符串的</li>
+</ul>
+</li>
+<li>Set类型
+<ul>
+<li>集合
+<ul>
+<li>stl集合
+<ul>
+<li>默认是排序的, 元素不重复</li>
+</ul>
+</li>
+<li>redis集合
+<ul>
+<li>元素不重复, 数据是无序的</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>SortedSet类型
+<ul>
+<li>排序集合, 集合中的每个元素分为两部分
+<ul>
+<li>[分数, 成员] -&gt; [66, &lsquo;&rsquo;tom&rsquo;&rsquo;]</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hash类型
+<ul>
+<li>跟map数据组织方式一样: key:value
+<ul>
+<li>Qt -&gt; QHash, QMap</li>
+<li>Map -&gt; 红黑树</li>
+<li>hash -&gt; 数组
+<ul>
+<li>a[index] = xx</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="22-redis常用命令">2.2 redis常用命令
+</h3><ul>
+<li>
+<p>String类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">key -&gt; string
+</span></span><span class="line"><span class="cl">value -&gt; string
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置一个键值对-&gt;string:string</span>
+</span></span><span class="line"><span class="cl">SET key value
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过key得到value</span>
+</span></span><span class="line"><span class="cl">GET key
+</span></span><span class="line"><span class="cl"><span class="c1"># 同时设置一个或多个 key-value 对</span>
+</span></span><span class="line"><span class="cl">MSET key value <span class="o">[</span>key value ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 同时查看过个key</span>
+</span></span><span class="line"><span class="cl">MGET key <span class="o">[</span>key ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果 key 已经存在并且是一个字符串， APPEND 命令将 value 追加到 key 原来的值的末尾</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># key: hello, value: world, append: 12345</span>
+</span></span><span class="line"><span class="cl">APPEND key value
+</span></span><span class="line"><span class="cl"><span class="c1"># 返回 key 所储存的字符串值的长度</span>
+</span></span><span class="line"><span class="cl">STRLEN key
+</span></span><span class="line"><span class="cl"><span class="c1"># 将 key 中储存的数字值减一。</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 前提, value必须是数字字符串 -&#34;12345&#34;</span>
+</span></span><span class="line"><span class="cl">DECR key
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>List类型 - 存储多个字符串</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">key -&gt; string
+</span></span><span class="line"><span class="cl">value -&gt; list
+</span></span><span class="line"><span class="cl"><span class="c1"># 将一个或多个值 value 插入到列表 key 的表头</span>
+</span></span><span class="line"><span class="cl">LPUSH key value <span class="o">[</span>value ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 将一个或多个值 value 插入到列表 key 的表尾 (最右边)。</span>
+</span></span><span class="line"><span class="cl">RPUSH key value <span class="o">[</span>value ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># list中删除元素</span>
+</span></span><span class="line"><span class="cl">LPOP key <span class="c1"># 删除最左侧元素</span>
+</span></span><span class="line"><span class="cl">RPOP key <span class="c1"># 删除最右侧元素</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 遍历</span>
+</span></span><span class="line"><span class="cl">LRANGE key start stop
+</span></span><span class="line"><span class="cl">	start: 起始位置, <span class="m">0</span>
+</span></span><span class="line"><span class="cl">	stop: 结束位置, -1
+</span></span><span class="line"><span class="cl"><span class="c1"># 通过下标得到对应位置的字符串</span>
+</span></span><span class="line"><span class="cl">LINDEX key index
+</span></span><span class="line"><span class="cl"><span class="c1"># list中字符串的个数</span>
+</span></span><span class="line"><span class="cl">LLEN key
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Set类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">key -&gt; string
+</span></span><span class="line"><span class="cl">value -&gt; set类型 <span class="o">(</span><span class="s2">&#34;string&#34;</span>, <span class="s2">&#34;string1&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加元素</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 将一个或多个 member 元素加入到集合 key 当中，已经存在于集合的 member 元素将被忽略</span>
+</span></span><span class="line"><span class="cl">SADD key member <span class="o">[</span>member ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 遍历</span>
+</span></span><span class="line"><span class="cl">SMEMBERS key
+</span></span><span class="line"><span class="cl"><span class="c1"># 差集</span>
+</span></span><span class="line"><span class="cl">SDIFF key <span class="o">[</span>key ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 交集</span>
+</span></span><span class="line"><span class="cl">SINTER key <span class="o">[</span>key ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 并集</span>
+</span></span><span class="line"><span class="cl">SUNION key <span class="o">[</span>key ...<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>SortedSet 类型</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">key -&gt; string
+</span></span><span class="line"><span class="cl">value -&gt; sorted <span class="o">([</span>socre, member<span class="o">]</span>, <span class="o">[</span>socre, member<span class="o">]</span>, ...<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加元素</span>
+</span></span><span class="line"><span class="cl">ZADD key score member <span class="o">[[</span>score member<span class="o">]</span> <span class="o">[</span>score member<span class="o">]</span> ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 遍历</span>
+</span></span><span class="line"><span class="cl">ZRANGE key start stop <span class="o">[</span>WITHSCORES<span class="o">]</span> <span class="c1"># -&gt; 升序集合</span>
+</span></span><span class="line"><span class="cl">ZREVRANGE key start stop <span class="o">[</span>WITHSCORES<span class="o">]</span> <span class="c1"># -&gt; 降序集合</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 指定分数区间内元素的个数</span>
+</span></span><span class="line"><span class="cl">ZCOUNT key min max
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Hash类型</p>
+<p><img src="/misaki-page/p/dfs_redis/2.png"
+	width="499"
+	height="230"
+	srcset="/misaki-page/p/dfs_redis/2_hu_4b25f9bb8c93a8cc.png 480w, /misaki-page/p/dfs_redis/2_hu_99f65a5eb51703fa.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="216"
+		data-flex-basis="520px"
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">key -&gt;string
+</span></span><span class="line"><span class="cl">value -&gt; <span class="nb">hash</span> <span class="o">([</span>key:value<span class="o">]</span>, <span class="o">[</span>key:value<span class="o">]</span>, <span class="o">[</span>key:value<span class="o">]</span>, ...<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加数据</span>
+</span></span><span class="line"><span class="cl">HSET key field value
+</span></span><span class="line"><span class="cl"><span class="c1"># 取数据</span>
+</span></span><span class="line"><span class="cl">HGET key field
+</span></span><span class="line"><span class="cl"><span class="c1"># 批量插入键值对</span>
+</span></span><span class="line"><span class="cl">HMSET key field value <span class="o">[</span>field value ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 批量取数据</span>
+</span></span><span class="line"><span class="cl">HMGET key field <span class="o">[</span>field ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除键值对</span>
+</span></span><span class="line"><span class="cl">HDEL key field <span class="o">[</span>field ...<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Key 相关的命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 删除键值对</span>
+</span></span><span class="line"><span class="cl">DEL key <span class="o">[</span>key ...<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看key值</span>
+</span></span><span class="line"><span class="cl">KEYS pattern
+</span></span><span class="line"><span class="cl">查找所有符合给定模式 pattern 的 key 。
+</span></span><span class="line"><span class="cl">KEYS * 匹配数据库中所有 key 。
+</span></span><span class="line"><span class="cl">KEYS h?llo 匹配 hello ， hallo 和 hxllo 等。
+</span></span><span class="line"><span class="cl">KEYS h*llo 匹配 hllo 和 heeeeello 等。
+</span></span><span class="line"><span class="cl">KEYS h<span class="o">[</span>ae<span class="o">]</span>llo 匹配 hello 和 hallo ，但不匹配 hillo
+</span></span><span class="line"><span class="cl"><span class="c1"># 给key设置生存时长</span>
+</span></span><span class="line"><span class="cl">EXPIRE key seconds
+</span></span><span class="line"><span class="cl"><span class="c1"># 取消生存时长</span>
+</span></span><span class="line"><span class="cl">PERSIST key
+</span></span><span class="line"><span class="cl"><span class="c1"># key对应的valued类型</span>
+</span></span><span class="line"><span class="cl">TYPE key
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="23-redis配置文件">2.3 redis配置文件
+</h3><blockquote>
+<p>配置文件是给<strong>redis服务器</strong>使用 的</p></blockquote>
+<ol>
+<li>
+<p>配置文件位置</p>
+<ul>
+<li>从源码安装目录中找 -&gt; redis.conf</li>
+</ul>
+</li>
+<li>
+<p>配置文件配置项</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># redis服务器绑定谁之后, 谁就能访问redis服务器</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 任何客户端都能访问服务器, 需要注释该选项</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> 127.0.0.1 192.168.1.100 
+</span></span><span class="line"><span class="cl"><span class="c1"># 保护模式, 如果要远程客户端访问服务器, 该模式要关闭</span>
+</span></span><span class="line"><span class="cl">protected-mode yes
+</span></span><span class="line"><span class="cl"><span class="c1"># reids服务器启动时候绑定的端口, 默认为6379</span>
+</span></span><span class="line"><span class="cl">port <span class="m">6379</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 超时时长, 0位关闭该选项, &gt;0则开启</span>
+</span></span><span class="line"><span class="cl">timeout <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 服务器启动之后不是守护进程</span>
+</span></span><span class="line"><span class="cl">daemonize no
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果服务器是守护进程, 就会生成一个pid文件</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ./ -&gt; reids服务器启动时候对应的目录</span>
+</span></span><span class="line"><span class="cl">pidfile ./redis.pid
+</span></span><span class="line"><span class="cl"><span class="c1"># 日志级别</span>
+</span></span><span class="line"><span class="cl"> loglevel notice
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果服务器是守护进程, 才会写日志文件</span>
+</span></span><span class="line"><span class="cl"> logfile <span class="s2">&#34;&#34;</span> -&gt; 这是没写
+</span></span><span class="line"><span class="cl"> logfile ./redis.log
+</span></span><span class="line"><span class="cl"> <span class="c1"># redis中数据库的个数</span>
+</span></span><span class="line"><span class="cl"> databases <span class="m">16</span> 
+</span></span><span class="line"><span class="cl"> 	- 切换 <span class="k">select</span> dbID <span class="o">[</span><span class="nv">dbID</span> <span class="o">==</span> <span class="m">0</span> ~ 16-1<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="24-redis数据持久化">2.4 redis数据持久化
+</h3><blockquote>
+<p>持久化: 数据从内存到磁盘的过程</p></blockquote>
+<p>持久化的两种方式:</p>
+<ul>
+<li>rdb方式
+<ul>
+<li>这是一种默认的持久化方式, 默认打开</li>
+<li>磁盘的持久化文件xxx.rdb</li>
+<li>将内存数据以二进制的方式直接写入磁盘文件</li>
+<li>文件比较小, 恢复时间短, 效率高</li>
+<li>以用户设定的频率 -&gt; 容易丢失数据</li>
+<li>数据完整性相对较低</li>
+</ul>
+</li>
+<li>aof方式
+<ul>
+<li>默认是关闭的</li>
+<li>磁盘的持久化文件xxx.aof</li>
+<li>直接将生成数据的命令写入磁盘文件</li>
+<li>文件比较大, 恢复时间长, 效率低</li>
+<li>以某种频率 -&gt; 1sec</li>
+<li>数据完整性高</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># rdb的同步频率, 任意一个满足都可以</span>
+</span></span><span class="line"><span class="cl">save <span class="m">900</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">save <span class="m">300</span> <span class="m">10</span>
+</span></span><span class="line"><span class="cl">save <span class="m">60</span> <span class="m">10000</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># rdb文件的名字</span>
+</span></span><span class="line"><span class="cl">dbfilename dump.rdb
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成的持久化文件保存的那个目录下, rdb和aof</span>
+</span></span><span class="line"><span class="cl">dir ./ 
+</span></span><span class="line"><span class="cl"><span class="c1"># 是不是要打开aof模式</span>
+</span></span><span class="line"><span class="cl">appendonly no
+</span></span><span class="line"><span class="cl"> -&gt; 打开: yes
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置aof文件的名字</span>
+</span></span><span class="line"><span class="cl">appendfilename <span class="s2">&#34;appendonly.aof&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># aof更新的频率</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># appendfsync always</span>
+</span></span><span class="line"><span class="cl">appendfsync everysec
+</span></span><span class="line"><span class="cl"><span class="c1"># appendfsync no</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>aof和rdb能不能同时打开?</p>
+<ul>
+<li>可以</li>
+</ul>
+</li>
+<li>
+<p>aof和rdb能不能同时关闭?</p>
+<ul>
+<li>
+<p>可以</p>
+</li>
+<li>
+<p>rdb如何关闭?</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">save <span class="s2">&#34;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>两种模式同时开启, 如果要进行数据恢复, 如何选择?</p>
+<ul>
+<li>效率上考虑:  rdb模式</li>
+<li>数据的完整性: aof模式</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-hiredis的使用">3 hiredis的使用
+</h2><ol>
+<li>
+<p>hiredis的安装</p>
+<ul>
+<li>下载地址: <a class="link" href="http://redis.cn/clients.html#c"  target="_blank" rel="noopener"
+    >http://redis.cn/clients.html#c</a></li>
+<li>安装
+<ul>
+<li>make</li>
+<li>make</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>hiredis API接口的使用</p>
+<ul>
+<li>
+<p>连接数据库</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 连接数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">redisContext</span> <span class="o">*</span><span class="nf">redisConnect</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">ip</span><span class="p">,</span> <span class="kt">int</span> <span class="n">port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">redisContext</span> <span class="o">*</span><span class="nf">redisConnectWithTimeout</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">ip</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">                                      <span class="kt">int</span> <span class="n">port</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">timeval</span> <span class="n">tv</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>执行redis命令函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 执行redis命令
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="o">*</span><span class="nf">redisCommand</span><span class="p">(</span><span class="n">redisContext</span> <span class="o">*</span><span class="n">c</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// redisCommand 函数实际的返回值类型
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">redisReply</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 命令执行结果的返回类型 */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">type</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 存储执行结果返回为整数 */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="kt">long</span> <span class="n">integer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* str变量的字符串值长度 */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">size_t</span> <span class="n">len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 存储命令执行结果返回是字符串, 或者错误信息 */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 返回结果是数组, 代表数据的大小 */</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">size_t</span> <span class="n">elements</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* 存储执行结果返回是数组*/</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">redisReply</span> <span class="o">**</span><span class="n">element</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">redisReply</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">redisReply</span> <span class="n">a</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="n">element</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">str</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>状态表示</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>REDIS_REPLY_STRING==1</td>
+          <td>返回值是字符串,字符串储存在redis-&gt;str当中,字符串长度为redi</td>
+      </tr>
+      <tr>
+          <td>REDIS_REPLY_ARRAY== 2</td>
+          <td>返回值是数组，数组大小存在redis-&gt;elements里面，数组值存储在redis-&gt;element[i]里面。数组里面存储的是指向redisReply的指针，数组里面的返回值可以通过redis-&gt;element[i]-&gt;str来访问，数组的结果里全是type==REDIS_REPLY_STRING的redisReply对象指针。</td>
+      </tr>
+      <tr>
+          <td>REDIS_REPLY_INTEGER == 3</td>
+          <td>返回整数long long，从integer字段获取值</td>
+      </tr>
+      <tr>
+          <td>REDIS_REPLY_NIL==4</td>
+          <td>返回值为空表示执行结果为空</td>
+      </tr>
+      <tr>
+          <td>REDIS_REPLY_STATUS ==5</td>
+          <td>返回命令执行的状态，比如set foo bar 返回的状态为OK，存储在str当中 reply-&gt;str == &ldquo;OK&rdquo; 。</td>
+      </tr>
+      <tr>
+          <td>REDIS_REPLY_ERROR ==6</td>
+          <td>命令执行错误,错误信息存放在 reply-&gt;str当中。</td>
+      </tr>
+  </tbody>
+</table></div>
+</li>
+<li>
+<p>释放资源</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 释放资源
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">freeReplyObject</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">reply</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">redisFree</span><span class="p">(</span><span class="n">redisContext</span> <span class="o">*</span><span class="n">c</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ol>
+<h2 id="4-复习">4. 复习
+</h2><ol>
+<li>
+<p>fastDFS</p>
+<ul>
+<li>
+<p>是什么?</p>
+<ul>
+<li>分布式文件系统</li>
+</ul>
+</li>
+<li>
+<p>干什么?</p>
+<ul>
+<li>提供文件上传</li>
+<li>提供文件下载</li>
+</ul>
+</li>
+<li>
+<p>怎么使用?</p>
+<ul>
+<li>
+<p>根据主机的角色 -&gt; 修改对应的配置文件</p>
+</li>
+<li>
+<p>启动各个角色</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">fdfs_trackerd /etc/fdfs/tracker.conf
+</span></span><span class="line"><span class="cl">fdfs_storaged /etc/fdfs/storage.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p>客户端编写</p>
+<p><img src="/misaki-page/p/dfs_redis/1531272014374.png"
+	width="572"
+	height="307"
+	srcset="/misaki-page/p/dfs_redis/1531272014374_hu_a5c4bc23e89768d7.png 480w, /misaki-page/p/dfs_redis/1531272014374_hu_5420d0763378b034.png 1024w"
+	loading="lazy"
+	
+		alt="1531272014374"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="186"
+		data-flex-basis="447px"
+	
+></p>
+<ul>
+<li>
+<p>操作步骤</p>
+<ol>
+<li>
+<p>创建管道 - pipe</p>
+</li>
+<li>
+<p>创建子进程</p>
+</li>
+<li>
+<p>子进程干什么?</p>
+<ul>
+<li>写管道, 关闭读端
+<ul>
+<li>将标准输出 -&gt; 管道的写端</li>
+</ul>
+</li>
+<li>重定向</li>
+<li>执行execl命令, 调用另外的进程fdfs_upload_file</li>
+<li>子进程退出</li>
+</ul>
+</li>
+<li>
+<p>父进程？</p>
+<ul>
+<li>读管道， 关闭写端</li>
+<li>释放子进程资源 - pcb
+<ul>
+<li>wait()/ waitpid()</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_summary/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_summary</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_upload-filelist-download/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_Upload Filelist Download</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_css-upload/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_css Upload</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_login/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_login</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_nginx-fastdfs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_nginx&#43;fastdfs</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Misaki
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计 <br />
+
+        
+        <span>
+            ICO 由 
+            <a href="https://www.flaticon.com/free-icons/halloween-party" 
+               title="Halloween party icons created by Pixelmeetup - Flaticon" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                Pixelmeetup
+            </a> 设计
+        </span>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/misaki-page/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

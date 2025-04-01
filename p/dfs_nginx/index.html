@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="[TOC]\n1. 一些基本概念 ###1.1 Nginx初步认识\nNginx介绍\nengine x\n俄罗斯\n开源的框架\nc语言\nTengine - 淘宝基于nginx修改的\nNginx能干什么?\n作为web服务器 解析http协议 反向代理服务器 了解反向代理的概念 邮件服务器 解析邮件相关的协议: pop3/smtp/imap Nginx的优势?\n">
+<title>Dfs_nginx</title>
+
+<link rel='canonical' href='https://northern-swallow.github.io/misaki-page/p/dfs_nginx/'>
+
+<link rel="stylesheet" href="/misaki-page/scss/style.min.1588b590a5e38dea5387567d98019f1a5daaddc2fca3ecdce862aceecaf453d9.css"><meta property='og:title' content="Dfs_nginx">
+<meta property='og:description' content="[TOC]\n1. 一些基本概念 ###1.1 Nginx初步认识\nNginx介绍\nengine x\n俄罗斯\n开源的框架\nc语言\nTengine - 淘宝基于nginx修改的\nNginx能干什么?\n作为web服务器 解析http协议 反向代理服务器 了解反向代理的概念 邮件服务器 解析邮件相关的协议: pop3/smtp/imap Nginx的优势?\n">
+<meta property='og:url' content='https://northern-swallow.github.io/misaki-page/p/dfs_nginx/'>
+<meta property='og:site_name' content='Misaki'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2025-03-18T12:03:02&#43;08:00'/><meta property='article:modified_time' content='2025-03-18T12:03:02&#43;08:00'/>
+<meta name="twitter:title" content="Dfs_nginx">
+<meta name="twitter:description" content="[TOC]\n1. 一些基本概念 ###1.1 Nginx初步认识\nNginx介绍\nengine x\n俄罗斯\n开源的框架\nc语言\nTengine - 淘宝基于nginx修改的\nNginx能干什么?\n作为web服务器 解析http协议 反向代理服务器 了解反向代理的概念 邮件服务器 解析邮件相关的协议: pop3/smtp/imap Nginx的优势?\n">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/misaki-page/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/misaki-page/img/avatar_hu_9586ef9abeecc997.jpg" width="300"
+                            height="421" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/misaki-page">Misaki</a></h1>
+            <h2 class="site-description">その声お、もう一度聞かせて、Yoħanna</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/390463666'
+                        target="_blank"
+                        title="bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/northern-swallow'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/misaki-page/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/misaki-page/%E5%8F%8B%E9%93%BE/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/en/" >English</option>
+                                
+                                    <option value="https://northern-swallow.github.io/misaki-page/" selected>简体中文</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#1-一些基本概念">1. 一些基本概念</a>
+      <ol>
+        <li><a href="#12-正向反向代理">1.2 正向/反向代理</a></li>
+        <li><a href="#13-域名和ip">1.3 域名和IP</a></li>
+      </ol>
+    </li>
+    <li><a href="#2-nginx-安装和配置">2. Nginx 安装和配置</a>
+      <ol>
+        <li><a href="#22-配置">2.2 配置</a></li>
+      </ol>
+    </li>
+    <li><a href="#3-nginx的使用">3. Nginx的使用</a>
+      <ol>
+        <li><a href="#31-部署静态网页">3.1 部署静态网页</a></li>
+        <li><a href="#32-反向代理和负载均衡">3.2 反向代理和负载均衡</a></li>
+      </ol>
+    </li>
+    <li><a href="#课外知识导读">课外知识导读</a>
+      <ol>
+        <li><a href="#1-url和uri">1. URL和URI</a></li>
+        <li><a href="#2-dns解析过程">2. DNS解析过程</a></li>
+      </ol>
+    </li>
+    <li><a href="#复习">复习</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/misaki-page/categories/c&#43;&#43;_%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/" >
+                C&#43;&#43;_分布式文件系统
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/misaki-page/p/dfs_nginx/">Dfs_nginx</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-03-18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 10 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>[TOC]</p>
+<h2 id="1-一些基本概念">1. 一些基本概念
+</h2><p>###1.1 Nginx初步认识</p>
+<ol>
+<li>
+<p>Nginx介绍</p>
+<ul>
+<li>
+<p>engine x</p>
+</li>
+<li>
+<p>俄罗斯</p>
+</li>
+<li>
+<p>开源的框架</p>
+</li>
+<li>
+<p>c语言</p>
+</li>
+<li>
+<p>Tengine - 淘宝基于nginx修改的</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Nginx能干什么?</p>
+<ul>
+<li>作为web服务器
+<ul>
+<li>解析http协议</li>
+</ul>
+</li>
+<li>反向代理服务器
+<ul>
+<li>了解反向代理的概念</li>
+</ul>
+</li>
+<li>邮件服务器
+<ul>
+<li>解析邮件相关的协议: pop3/smtp/imap</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Nginx的优势?</p>
+<blockquote>
+<ul>
+<li>
+<p>更快</p>
+<ul>
+<li>高峰期(数以万计的并发时)nginx可以比其它web服务器更快的响应请求</li>
+</ul>
+</li>
+<li>
+<p>高扩展</p>
+<ul>
+<li><strong>低耦合</strong>设计的模块组成,丰富的第三方模块支持</li>
+</ul>
+</li>
+<li>
+<p>高可靠</p>
+<ul>
+<li>经过大批网站检验
+<ul>
+<li><a class="link" href="https://www.sina.com.cn"  target="_blank" rel="noopener"
+    >www.sina.com.cn</a></li>
+<li><a class="link" href="https://www.xunlei.com"  target="_blank" rel="noopener"
+    >www.xunlei.com</a></li>
+<li><a class="link" href="https://www.163.com"  target="_blank" rel="noopener"
+    >www.163.com</a></li>
+</ul>
+</li>
+<li>每个worker进程相对独立, 出错之后可以快速开启新的worker
+<ul>
+<li>worker进程的个数是可以控制的</li>
+<li>在后台干活的进程</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>低内存消耗</p>
+<ul>
+<li>一般情况下,10000个非活跃的HTTP  Keep-Alive连接在nginx中仅消耗 2.5M内存</li>
+</ul>
+</li>
+<li>
+<p>单机支持10万以上的并发连接</p>
+<ul>
+<li>取决于内存,10万远未封顶</li>
+</ul>
+</li>
+<li>
+<p>热部署</p>
+<ul>
+<li>master和worker的分离设计,可实现7x24小时不间断服务的前提下升级nginx可执行文件</li>
+</ul>
+</li>
+<li>
+<p>最自由的BSD许可协议</p>
+<ul>
+<li>BSD许可协议允许用户免费使用nginx, 修改nginx源码,然后再发布
+<ul>
+<li>淘宝: tengine</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></blockquote>
+</li>
+</ol>
+<h3 id="12-正向反向代理">1.2 正向/反向代理
+</h3><ol>
+<li>
+<p>正向代理</p>
+<blockquote>
+<p>正向代理是位于客户端和原始服务器之间的服务器，为了能够从原始服务器获取请求的内容，客户端需要将请求发送给代理服务器，然后再由代理服务器将请求转发给原始服务器，原始服务器接受到代理服务器的请求并处理，然后将处理好的数据转发给代理服务器，之后再由代理服务器转发发给客户端，完成整个请求过程。</p>
+<p>==<strong>正向代理的典型用途就是为在防火墙内的局域网客户端提供访问Internet的途径</strong>==, 比如:</p>
+<ul>
+<li>学校的局域网</li>
+<li>单位局域网访问外部资源</li>
+</ul></blockquote>
+</li>
+</ol>
+<p><img src="/misaki-page/p/dfs_nginx/051157002507977.jpg"
+	width="413"
+	height="220"
+	srcset="/misaki-page/p/dfs_nginx/051157002507977_hu_4c4086f62dffc1e9.jpg 480w, /misaki-page/p/dfs_nginx/051157002507977_hu_ca1d2fef4c3b71a9.jpg 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="187"
+		data-flex-basis="450px"
+	
+></p>
+<p>正向代理服务器是为用户服务的</p>
+<ol start="2">
+<li>
+<p>反向代理</p>
+<blockquote>
+<p>反向代理方式是指代理原始服务器来接受来自Internet的链接请求，然后将请求转发给内部网络上的原始服务器，并将从原始服务器上得到的结果转发给Internet上请求数据的客户端。那么顾名思义，反向代理就是位于Internet和原始服务器之间的服务器，对于客户端来说就表现为一台服务器，客户端所发送的请求都是直接发送给反向代理服务器，然后由反向代理服务器统一调配。</p></blockquote>
+<p><img src="/misaki-page/p/dfs_nginx/1.png"
+	width="554"
+	height="333"
+	srcset="/misaki-page/p/dfs_nginx/1_hu_7171b8e7b20cd94.png 480w, /misaki-page/p/dfs_nginx/1_hu_142e8d8ffdc955ae.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="166"
+		data-flex-basis="399px"
+	
+></p>
+<p><img src="/misaki-page/p/dfs_nginx/2.png"
+	width="554"
+	height="448"
+	srcset="/misaki-page/p/dfs_nginx/2_hu_1b156da03d051b9.png 480w, /misaki-page/p/dfs_nginx/2_hu_ff32ba3d45b2b661.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="123"
+		data-flex-basis="296px"
+	
+></p>
+<p><img src="/misaki-page/p/dfs_nginx/3.png"
+	width="554"
+	height="400"
+	srcset="/misaki-page/p/dfs_nginx/3_hu_c9e6f5d1e09abab9.png 480w, /misaki-page/p/dfs_nginx/3_hu_5d986b41476dc2fe.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="138"
+		data-flex-basis="332px"
+	
+></p>
+<p><img src="/misaki-page/p/dfs_nginx/4.png"
+	width="554"
+	height="319"
+	srcset="/misaki-page/p/dfs_nginx/4_hu_4ef2880fda01c7ec.png 480w, /misaki-page/p/dfs_nginx/4_hu_d4e2a8e78c97b996.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="173"
+		data-flex-basis="416px"
+	
+></p>
+</li>
+<li>
+<p>客户端给服务器发送请求, 连接服务器, 用户不知道服务器地址, 只有反向代理服务器的地址是公开的</p>
+</li>
+<li>
+<p>请求直接发给反向代理服务器</p>
+</li>
+<li>
+<p>反向代理服务器将请求转发给后边的web服务器</p>
+<ul>
+<li>web服务器 N 台</li>
+<li>反向代理服务器转发请求会轮询进行</li>
+</ul>
+</li>
+<li>
+<p>web服务器收到请求进行处理, 得到结果</p>
+</li>
+<li>
+<p>web服务器将处理结果发送给反向代理服务器</p>
+</li>
+<li>
+<p>反向代理服务器将拿到的结果转发给客户端</p>
+</li>
+</ol>
+<h3 id="13-域名和ip">1.3 域名和IP
+</h3><ol>
+<li>什么是域名？
+<ul>
+<li><a class="link" href="https://www.baidu.com"  target="_blank" rel="noopener"
+    >www.baidu.com</a></li>
+<li>jd.com</li>
+<li>taobao.com</li>
+</ul>
+</li>
+<li>什么是IP地址？
+<ul>
+<li>点分十进制的字符串
+<ul>
+<li>11.22.34.45</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>域名和IP地址的关系？
+<ul>
+<li>域名绑定IP
+<ul>
+<li>一个域名只能绑定一个IP</li>
+<li>一个IP地址被多个域名绑定</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-nginx-安装和配置">2. Nginx 安装和配置
+</h2><p>###2.1 安装</p>
+<ol>
+<li>
+<p>下载</p>
+<blockquote>
+<ol>
+<li>官方地址: <a class="link" href="http://nginx.org/"  target="_blank" rel="noopener"
+    >http://nginx.org/</a></li>
+<li>Nginx相关依赖:
+<ul>
+<li>OpenSSL: <a class="link" href="http://www.openssl.org/"  target="_blank" rel="noopener"
+    >http://www.openssl.org/</a>
+<ul>
+<li>密码库</li>
+<li>使用https进行通信的时候使用</li>
+</ul>
+</li>
+<li>ZLib下载: <a class="link" href="http://www.zlib.net/"  target="_blank" rel="noopener"
+    >http://www.zlib.net/</a>
+<ul>
+<li>数据压缩</li>
+<li>安装:
+<ul>
+<li>./configure</li>
+<li>make</li>
+<li>sudo make install</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>PCRE下载:  <a class="link" href="http://www.pcre.org/"  target="_blank" rel="noopener"
+    >http://www.pcre.org/</a>
+<ul>
+<li>解析正则表达式</li>
+<li>安装
+<ul>
+<li>./configure</li>
+<li>make</li>
+<li>sudo make install</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol></blockquote>
+</li>
+<li>
+<p>安装</p>
+<ul>
+<li>
+<p>nginx的安装</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># nginx工作时候需要依赖三个库</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 三个参数=这三个库对应的源码安装目录</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据自己的电脑的库安装包的位置进行指定</span>
+</span></span><span class="line"><span class="cl">./configure --with-openssl<span class="o">=</span>../openssl-1.0.1t --with-pcre<span class="o">=</span>../pcre-8.40 --with-zlib<span class="o">=</span>../zlib-1.2.11
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">sudo make install
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p><img src="/misaki-page/assets%5c1539658551107.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="1539658551107"
+	
+	
+></p>
+</li>
+<li>
+<p>Nginx 相关的指令</p>
+<ul>
+<li>
+<p>Nginx的默认安装目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/usr/local/nginx
+</span></span><span class="line"><span class="cl"> conf -&gt; 存储配置文件的目录
+</span></span><span class="line"><span class="cl"> html -&gt; 默认的存储网站<span class="o">(</span>服务器<span class="o">)</span>静态资源的目录 <span class="o">[</span>图片, html, js, css<span class="o">]</span>
+</span></span><span class="line"><span class="cl"> logs -&gt; 存储log日志
+</span></span><span class="line"><span class="cl"> sbin -&gt; 启动nginx的可执行程序
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Nginx可执行程序的路径</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/usr/local/nginx/sbin/nginx
+</span></span><span class="line"><span class="cl"><span class="c1"># 快速启动的方式</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1. 将/usr/local/nginx/sbin/添加到环境变量PATH中</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. /usr/local/nginx/sbin/nginx创建软连接, 放到PATH对应的路径中, 比如: /usr/bin</span>
+</span></span><span class="line"><span class="cl">ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>启动Nginx - 需要管理器权限</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 假设软连接已经创建完毕</span>
+</span></span><span class="line"><span class="cl">sudo nginx <span class="c1"># 启动</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>关闭Nginx</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 第一种, 马上关闭</span>
+</span></span><span class="line"><span class="cl">sudo nginx -s stop
+</span></span><span class="line"><span class="cl"><span class="c1"># 第二种, 等nginx作为当前操作之后关闭</span>
+</span></span><span class="line"><span class="cl">sudo nginx -s quit
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>重新加载Nginx</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sudo nginx -s reload  <span class="c1"># 修改了nginx的配置文件之后, 需要执行该命令</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>测试是否安装成功</p>
+<ul>
+<li>知道nginx对应的主机的IP地址 - &gt; 192.168.1.100</li>
+<li>在浏览器中访问该IP地址
+<ul>
+<li>看到一个welcom nginx的欢迎界面</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="22-配置">2.2 配置
+</h3><ol>
+<li>
+<p>Nginx配置文件的位置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/usr/local/nginx/conf/nginx.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Nginx配置文件的组织格式</p>
+<p><img src="/misaki-page/p/dfs_nginx/5.png"
+	width="246"
+	height="152"
+	srcset="/misaki-page/p/dfs_nginx/5_hu_c50f7553ecb1ba64.png 480w, /misaki-page/p/dfs_nginx/5_hu_cbd46841f4822f2e.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="161"
+		data-flex-basis="388px"
+	
+></p>
+<ul>
+<li>http -&gt; 模块, http相关的通信设置
+<ul>
+<li>server模块 -&gt; 每个server对应的是一台web服务器
+<ul>
+<li>location 模块
+<ul>
+<li>处理的是客户端的请求</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>mail -&gt; 模块, 处理邮件相关的动作</li>
+</ul>
+</li>
+<li>
+<p>常用配置项介绍</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">user</span>  <span class="s">nobody</span><span class="p">;</span> <span class="c1"># 启动之后的worker进程属于谁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">-</span> <span class="s">错误提示:</span> <span class="s">nginx操作xxx文件时候失败,</span> <span class="s">原因:</span> <span class="s">Permission</span> <span class="s">denied</span>  
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">将nobody</span> <span class="s">-&gt;</span> <span class="s">root</span>
+</span></span><span class="line"><span class="cl"><span class="s">worker_processes</span>  <span class="mi">1</span><span class="p">;</span> <span class="c1"># 设置worker进程的个数, 最大 == cpu的核数 (推荐)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">error_log</span>  <span class="s">logs/error.log</span><span class="p">;</span> <span class="c1"># 错误日志, /usr/local/nginx
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">pid</span>        <span class="s">logs/nginx.pid</span><span class="p">;</span> <span class="c1"># pid文件, 里边是nginx的进程ID
+</span></span></span><span class="line"><span class="cl"><span class="c1"># nginx的事件处理
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">events</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"> 	<span class="kn">use</span> <span class="s">epoll</span><span class="p">;</span>	<span class="c1"># 多路IO转接模型使用epoll
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span> 	<span class="kn">worker_connections</span>  <span class="mi">1024</span><span class="p">;</span>	<span class="kn">//</span> <span class="s">每个工作的进程的最大连接数</span>
+</span></span><span class="line"><span class="cl"><span class="err">}</span>
+</span></span><span class="line"><span class="cl"><span class="s">http-&gt;server</span> <span class="s">-&gt;</span> <span class="s">每个server模块可以看做一台web服务器</span>
+</span></span><span class="line"><span class="cl"><span class="s">server</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>  <span class="c1"># web服务器监听的端口, http协议的默认端口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">server_name</span>  <span class="s">localhost</span><span class="p">;</span> <span class="c1"># 对应一个域名, 客户端通过该域名访问服务器
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">charset</span> <span class="s">utf8</span><span class="p">;</span> 	<span class="c1"># 字符串编码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">location</span> <span class="p">{</span>	<span class="kn">//</span> <span class="s">模块,</span> <span class="s">处理客户端的请求</span>
+</span></span><span class="line"><span class="cl"><span class="err">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 客户端 (浏览器), 请求:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="s">http://192.168.10.100:80/login.html</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 服务器处理客户端的请求
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="s">服务器要处理的指令如何从url中提取?</span>
+</span></span><span class="line"><span class="cl">  <span class="s">-</span> <span class="s">去掉协议:</span> <span class="s">http</span>
+</span></span><span class="line"><span class="cl">  <span class="s">-</span> <span class="s">去掉IP/域名+端口:</span> <span class="n">192.168.10.100</span><span class="p">:</span><span class="mi">80</span>
+</span></span><span class="line"><span class="cl">  <span class="s">-</span> <span class="s">最后如果是文件名,</span> <span class="s">去掉该名字:</span> <span class="s">login.html</span>
+</span></span><span class="line"><span class="cl">  <span class="s">-</span> <span class="s">剩下的:</span> <span class="s">/</span>
+</span></span><span class="line"><span class="cl">  <span class="s">服务器要处理的location指令:</span> 
+</span></span><span class="line"><span class="cl">  <span class="s">location</span> <span class="s">/</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">处理动作</span>
+</span></span><span class="line"><span class="cl">  <span class="err">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="3-nginx的使用">3. Nginx的使用
+</h2><h3 id="31-部署静态网页">3.1 部署静态网页
+</h3><ol>
+<li>
+<p>静态网页存储目录</p>
+<ul>
+<li>
+<p>默认的存储目录:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/usr/local/nginx/html
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>自己创建新的目录:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">应该在 /usr/local/nginx/
+</span></span><span class="line"><span class="cl">mkdir /usr/local/nginx/mydir
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>练习</p>
+<blockquote>
+<p>在Nginx服务器上进行网页部署, 实现如下访问:</p>
+<p>在/usr/local/nginx/创建新的目录, yundisk用来存储静态网页</p></blockquote>
+<ul>
+<li>
+<p>访问地址: <a class="link" href="http://192.168.80.254/login.html"  target="_blank" rel="noopener"
+    >http://192.168.80.254/login.html</a></p>
+<ul>
+<li>
+<p>login.html放到什么位置?</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">/ -&gt; 服务器的资源根目录, /usr/local/nginx/yundisk
+</span></span><span class="line"><span class="cl">login.htm-&gt; 放到yundisk中
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>服务器要处理的动作</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="c1"># 对应这个请求服务器要添加一个location
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">location</span> <span class="s">指令(/)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 找一个静态网页
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">root</span> <span class="s">yundisk</span><span class="p">;</span>  <span class="c1"># 相对于/usr/local/nginx/来找
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1"># 客户端的请求是一个目录, nginx需要找一默认显示的网页
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置之后重启nginx
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">sudo</span> <span class="s">nginx</span> <span class="s">-s</span> <span class="s">reload</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>访问地址: <a class="link" href="http://192.168.80.254/hello/reg.html"  target="_blank" rel="noopener"
+    >http://192.168.80.254/hello/reg.html</a></p>
+<ul>
+<li>
+<p>hello是什么?</p>
+<ul>
+<li>目录</li>
+</ul>
+</li>
+<li>
+<p>reg.html放到哪儿?</p>
+<ul>
+<li>hello目录中</li>
+</ul>
+</li>
+<li>
+<p>如何添加location</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/hello/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">yundisk</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">xx.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>访问地址: <a class="link" href="http://192.168.80.254/upload/"  target="_blank" rel="noopener"
+    >http://192.168.80.254/upload/</a> 浏览器显示upload.html</p>
+<ul>
+<li>
+<p>直接访问一个目录, 得到一默认网页</p>
+<ul>
+<li>
+<p>upload是一个目录, uplaod.html应该再upload目录中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/upload/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">yundisk</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">upload.html</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="32-反向代理和负载均衡">3.2 反向代理和负载均衡
+</h3><blockquote>
+<p>反向代理和负载均衡是两码事儿</p></blockquote>
+<p><img src="/misaki-page/p/dfs_nginx/8.png"
+	width="717"
+	height="358"
+	srcset="/misaki-page/p/dfs_nginx/8_hu_100d9054726e69f4.png 480w, /misaki-page/p/dfs_nginx/8_hu_4290a8ed03e55541.png 1024w"
+	loading="lazy"
+	
+		alt="1527415078314"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="200"
+		data-flex-basis="480px"
+	
+></p>
+<p>准备工作:</p>
+<blockquote>
+<ol>
+<li>需要客户端 - 1个
+<ul>
+<li>Window中的浏览器作为客户端</li>
+</ul>
+</li>
+<li>反向代理服务器 -&gt; 1个
+<ul>
+<li>window作为反向代理服务器</li>
+</ul>
+</li>
+<li>web服务器 -&gt; 2个
+<ul>
+<li>ubuntu - robin: 192.168.247.135</li>
+<li>ubuntu - luffy : 192.168.26.250</li>
+</ul>
+</li>
+</ol></blockquote>
+<ol>
+<li>
+<p>反向代理设置</p>
+<p><img src="/misaki-page/assets%5c1539680213601.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="1539680213601"
+	
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">找window上对应的nginx的配置文件</span>
+</span></span><span class="line"><span class="cl">	<span class="s">-</span> <span class="s">conf/nginx.conf</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 代理几台服务器就需要几个server模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1"># 客户端访问的url: http://192.168.1.100/login.html
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="s">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>        <span class="c1"># 客户端访问反向代理服务器, 代理服务器监听的端口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">server_name</span>  <span class="s">ubuntu.com</span><span class="p">;</span> <span class="c1"># 客户端访问反向代理服务器, 需要一个域名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 反向代理服务器转发指令, http:// 固定
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kn">proxy_pass</span> <span class="s">http://robin.test.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 添加一个代理模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">upstream</span> <span class="s">robin.test.com</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">server</span> <span class="n">192.168.247.135</span><span class="p">:</span><span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># luffy
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>        <span class="c1"># 客户端访问反向代理服务器, 代理服务器监听的端口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">server_name</span>  <span class="s">hello.com</span><span class="p">;</span> <span class="c1"># 客户端访问反向代理服务器, 需要一个域名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 反向代理服务器转发指令, http:// 固定
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kn">proxy_pass</span> <span class="s">http://luffy.test.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 添加一个代理模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">upstream</span> <span class="s">luffy.test.com</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">server</span> <span class="n">192.168.26.250</span><span class="p">:</span><span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>负载均衡设置</p>
+<p><img src="/misaki-page/assets%5c1539681085862.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="1539681085862"
+	
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl">    <span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>         <span class="c1"># 客户端访问反向代理服务器, 代理服务器监听的端口
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">server_name</span>  <span class="s">localhost</span><span class="p">;</span> <span class="c1"># 客户端访问反向代理服务器, 需要一个域名
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 反向代理服务器转发指令, http:// 固定的头
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kn">proxy_pass</span> <span class="s">http://linux.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">location</span> <span class="s">/hello/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 反向代理服务器转发指令, http:// 固定的头
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kn">proxy_pass</span> <span class="s">http://linux.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    	<span class="kn">location</span> <span class="s">/upload/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 反向代理服务器转发指令, http:// 固定的头
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="kn">proxy_pass</span> <span class="s">http://linux.com</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 添加一个代理模块
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">upstream</span> <span class="s">linux.com</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">server</span> <span class="n">192.168.247.135</span><span class="p">:</span><span class="mi">80</span> <span class="s">weight=1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">server</span> <span class="n">192.168.26.250</span><span class="p">:</span><span class="mi">80</span> <span class="s">weight=3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## =====================================
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">web服务器需要做什么?</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 192.168.247.135
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s">location</span> <span class="s">/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/hello/</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">xx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/upload/</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">xx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 192.168.26.250
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">location</span> <span class="s">/</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/hello/</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">xx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/upload/</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">root</span> <span class="s">xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">index</span> <span class="s">xx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="课外知识导读">课外知识导读
+</h2><h3 id="1-url和uri">1. URL和URI
+</h3><img src="6.png" width="50%">
+<ol>
+<li>
+<p>概念:</p>
+<blockquote>
+<ul>
+<li>
+<p>URL（Uniform Resource  Locator）: 统一资源定位符</p>
+</li>
+<li>
+<p>表示资源位置的字符串</p>
+<ul>
+<li>基本格式: &ldquo;==协议://IP地址/路径和文件名==&rdquo;
+<ul>
+<li><a class="link" href="ftp://ftp.is.co.za/rfc/rfc1808.txt" >ftp://ftp.is.co.za/rfc/rfc1808.txt</a></li>
+<li><a class="link" href="http://www.ietf.org/rfc/rfc2396.txt"  target="_blank" rel="noopener"
+    >http://www.ietf.org/rfc/rfc2396.txt</a></li>
+<li><a class="link" href="telnet://192.0.2.16:80/" >telnet://192.0.2.16:80/</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>URN（Uniform Resource  Name）: 统一资源名称</p>
+<ul>
+<li>P2P下载中使用的磁力链接</li>
+</ul>
+</li>
+<li>
+<p>URI（Uniform Resource  Identifier）: 统一资源标识符</p>
+<ul>
+<li>是一个紧凑的字符串用来标示抽象或物理资源, ==<strong>URL是URI的一种</strong>==</li>
+<li>让URI能成为URL的当然就是那个“访问机制”，“网络位置”。e.g. <code>http://</code> or <code>ftp://</code>。
+<ul>
+<li>files.hp.com</li>
+<li><a class="link" href="tel:&#43;1-816-555-1212" >tel:+1-816-555-1212</a></li>
+<li><a class="link" href="ftp://ftp.is.co.za/rfc/rfc1808.txt" >ftp://ftp.is.co.za/rfc/rfc1808.txt</a>               （also a URL）</li>
+<li><a class="link" href="http://www.ietf.org/rfc/rfc2396.txt"  target="_blank" rel="noopener"
+    >http://www.ietf.org/rfc/rfc2396.txt</a>         （also a URL）</li>
+<li><a class="link" href="telnet://192.0.2.16:80/" >telnet://192.0.2.16:80/</a>                              （also a URL）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></blockquote>
+</li>
+<li>
+<p>经验式理解:</p>
+<p><img src="/misaki-page/p/dfs_nginx/7.png"
+	width="664"
+	height="58"
+	srcset="/misaki-page/p/dfs_nginx/7_hu_458e82c1ef76180d.png 480w, /misaki-page/p/dfs_nginx/7_hu_faa0852b131e7e2f.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1144"
+		data-flex-basis="2747px"
+	
+></p>
+<p>从包含关系上说: URI包含URL</p>
+<p>字符串长度上说: URL包含URI</p>
+<p>UIRI可以没有协议, 没有地址(IP/域名)</p>
+</li>
+</ol>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>URL</th>
+          <th>红色字体部分+绿色字体部分</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>URI</td>
+          <td>绿色字体部分</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="2-dns解析过程">2. DNS解析过程
+</h3><p><img src="/misaki-page/p/dfs_nginx/2033581_1370929843HFAO.png"
+	width="739"
+	height="376"
+	srcset="/misaki-page/p/dfs_nginx/2033581_1370929843HFAO_hu_81b3290639a73b75.png 480w, /misaki-page/p/dfs_nginx/2033581_1370929843HFAO_hu_d7b9cf85b7389c55.png 1024w"
+	loading="lazy"
+	
+		alt="wps_clip_image-14256"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="196"
+		data-flex-basis="471px"
+	
+></p>
+<ol>
+<li>
+<p>DNS解析的过程</p>
+<blockquote>
+<ol>
+<li>在浏览器中输入www.magedu.com域名，操作系统会先检查自己本地的hosts文件是否有这个网址映射关系，如果有，就先调用这个IP地址映射，完成域名解析。</li>
+<li>如果hosts里没有这个域名的映射，则查找本地DNS解析器缓存，是否有这个网址映射关系，如果有，直接返回，完成域名解析。
+<ul>
+<li>Windows和Linux系统都会在本地缓存dns解析的记录，提高速度。</li>
+</ul>
+</li>
+<li>如果hosts与本地DNS解析器缓存都没有相应的网址映射关系，首先会找<code>TCP/IP</code>参数中设置的首选DNS服务器，在此我们叫它本地DNS服务器，此服务器收到查询时，如果要查询的域名，包含在本地配置区域资源中，则返回解析结果给客户机，完成域名解析，此解析具有权威性。</li>
+<li>如果要查询的域名，不由本地DNS服务器区域解析，但该DNS服务器已缓存了此网址映射关系，则调用这个IP地址映射，完成域名解析，此解析不具有权威性。</li>
+<li>如果本地DNS服务器本地区域文件与缓存解析都失效，则根据本地DNS服务器的设置（没有设置转发器）进行查询，如果未用转发模式，本地DNS就把请求发至13台根DNS，根DNS服务器收到请求后会判断这个域名(.com)是谁来授权管理，并会返回一个负责该顶级域名服务器的一个IP。本地DNS服务器收到IP信息后，将会联系负责 .com域的这台服务器。这台负责 .com域的服务器收到请求后，如果自己无法解析，它就会找一个管理 .com域的下一级DNS服务器地址(magedu.com)给本地DNS服务器。当本地DNS服务器收到这个地址后，就会找magedu.com域服务器，重复上面的动作进行查询，直至找到www.magedu.com主机。</li>
+<li>如果用的是转发模式（设置转发器），此DNS服务器就会把请求转发至上一级ISP DNS服务器，由上一级服务器进行解析，上一级服务器如果不能解析，或找根DNS或把转请求转至上上级，以此循环。不管是本地DNS服务器用是是转发，还是根提示，最后都是把结果返回给本地DNS服务器，由此DNS服务器再返回给客户机。</li>
+</ol></blockquote>
+</li>
+<li>
+<p>域名解析服务器</p>
+<blockquote>
+<ul>
+<li>
+<p>Pod DNS+:</p>
+<ul>
+<li>首选：119.29.29.29</li>
+<li>备选：182.254.116.116</li>
+</ul>
+</li>
+<li>
+<p>114DNS:</p>
+<ul>
+<li>首选：114.114.114.114</li>
+<li>备选：114.114.114.115</li>
+</ul>
+</li>
+<li>
+<p>阿里 AliDNS:</p>
+<ul>
+<li>
+<p>首选：223.5.5.5</p>
+</li>
+<li>
+<p>备选：223.6.6.6</p>
+</li>
+</ul>
+</li>
+</ul></blockquote>
+</li>
+<li>
+<p>hosts文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 存储的是域名和IP的对应关系</span>
+</span></span><span class="line"><span class="cl">-windows目录: <span class="s2">&#34;C:\Windows\System32\drivers\etc\hosts&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="复习">复习
+</h2><p>redis</p>
+<ol>
+<li>
+<p>是什么?</p>
+<ul>
+<li>非关系型数据库 - nosql
+<ul>
+<li>数据存储在内存里边</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>能干什么?</p>
+<ul>
+<li>提高程序效率</li>
+<li>程序中频繁访问的数据, 可以存储到redis中</li>
+</ul>
+</li>
+<li>
+<p>我们需要干什么?</p>
+<ul>
+<li>
+<p>会安装</p>
+</li>
+<li>
+<p>掌握启动redis服务器和客户端的启动命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 服务器</span>
+</span></span><span class="line"><span class="cl">redis-server <span class="o">(</span>配置文件名<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 客户端</span>
+</span></span><span class="line"><span class="cl">redis-cli <span class="o">(</span>-h redis服务器IP -p 端口<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>redis中支持的数据类型 - value</p>
+<ul>
+<li>
+<p>键值对方式存储数据</p>
+<ul>
+<li>key - 字符串</li>
+<li>value
+<ul>
+<li>字符串 - string</li>
+<li>列表 - list</li>
+<li>集合 - set</li>
+<li>排序集合 - sortedSet</li>
+<li>哈希 - hash</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>关于服务器使用的配置文件的修改</p>
+</li>
+<li>
+<p>redis中持久化</p>
+<ul>
+<li>rdb</li>
+<li>aof</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>能够在程序中操作redis服务器</p>
+<ul>
+<li>需要使用以下函数接口</li>
+<li>官方地址 - &gt; 客户端 -&gt; 选择语言</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_summary/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_summary</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_upload-filelist-download/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_Upload Filelist Download</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_css-upload/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_css Upload</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_login/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_login</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/misaki-page/p/dfs_nginx-fastdfs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Dfs_nginx&#43;fastdfs</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Misaki
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计 <br />
+
+        
+        <span>
+            ICO 由 
+            <a href="https://www.flaticon.com/free-icons/halloween-party" 
+               title="Halloween party icons created by Pixelmeetup - Flaticon" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                Pixelmeetup
+            </a> 设计
+        </span>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/misaki-page/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
